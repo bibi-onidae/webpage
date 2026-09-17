@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jisun Hwang — HCI Researcher</title>
+
+<!--
+================================================================================
+  JISUN HWANG — ACADEMIC PERSONAL WEBSITE  /  편집 가이드
+================================================================================
+
+  ▷ 폴더 구조 (이 구조를 유지하세요)
+      index.html            ← 이 파일. 모든 내용과 디자인이 여기 들어있습니다.
+      assets/portrait.jpg   ← 프로필 사진 (원하는 사진을 이 이름으로 넣으세요)
+      assets/portrait2.jpg  ← 마우스를 올렸을 때 보이는 두번째 사진
+      assets/scholar.png    ← Google Scholar 아이콘
+      assets/linkedin.png   ← LinkedIn 아이콘
+      assets/CV_JisunHwang.pdf  ← (선택) CV 파일을 넣으면 CV 링크가 열립니다
+
+  ▷ 어디를 고치면 되나요?
+      이 파일에서 "★" 표시가 붙은 주석만 찾으면 됩니다. 크게 두 군데입니다.
+
+      1) 화면 위쪽 HTML  → 이름 / 소개문 / 링크 / 키워드
+         (검색: ★ PROFILE,  ★ ABOUT,  ★ KEYWORDS)
+
+      2) 파일 맨 아래 SITE_DATA  → News / Research / Projects / Work Experience 목록
+         (검색: ★ SITE_DATA)
+         여기는 자바스크립트 목록입니다. 규칙 3개만 지키면 안전합니다.
+           · 각 항목은 { ... } 로 감싸고, 항목 사이에는 쉼표(,)를 넣습니다.
+           · 따옴표 안의 글자만 바꾸세요. 따옴표를 지우지 마세요.
+           · 글 안에 ' 를 쓰려면 \' 로 적거나 “ ” 같은 따옴표를 쓰세요.
+
+  ▷ 저장 후 index.html 을 브라우저로 열어 확인하세요.
+    (화면이 하얗게 나오면 SITE_DATA 의 쉼표·따옴표를 확인하세요.)
+
+  ▷ 웹에 올리기: GitHub Pages / Netlify 에 이 폴더 전체를 업로드하면 끝입니다.
+
+  ▷ 색 / 폰트 / 여백을 바꾸고 싶다면 아래 <style> 의 :root 변수를 고치세요.
+================================================================================
+-->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  /* ────────────────────────────────────────────────────────────
+     디자인 설정 — 색과 크기는 여기서 한 번에 바꿀 수 있습니다
+     ──────────────────────────────────────────────────────────── */
+  :root {
+    --bg:        #FAF9F7;   /* 배경 (연한 웜 화이트) */
+    --ink:       #14130F;   /* 기본 글자색 */
+    --ink-soft:  #3A372F;   /* 본문 회색 글자 */
+    --ink-mute:  #5F5B52;   /* 보조 정보 */
+    --ink-faint: #8A8578;   /* 섹션 라벨, 날짜 */
+    --line:      #EAE7E1;   /* 구분선 */
+    --line-soft: #EEEBE5;   /* 목록 안쪽 구분선 */
+    --accent:    #1D6FC0;   /* 포인트 색 (파랑) */
+    --maxw:      1180px;    /* 전체 폭 */
+    --navh:      82px;      /* 상단바 높이 보정값 */
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: 'Archivo', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--ink); text-decoration: none; }
+  a:hover { color: var(--accent); }
+    /* 소개 문단 안의 링크 — 평소에도 파란색, 마우스를 올리면 밑줄 */
+  .about-lead a, .about-body a { color: var(--accent); }
+  .about-lead a:hover, .about-body a:hover { text-decoration: underline; }
+
+  p { text-wrap: pretty; }
+
+  .mono { font-family: 'IBM Plex Mono', monospace; }
+
+  /* 상단바 — 반투명해서 마우스 빛이 비쳐 보입니다 */
+  header.topbar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 40;
+    background: rgba(250,249,247,.42); backdrop-filter: blur(9px);
+    border-bottom: 1px solid var(--line);
+  }
+  header.topbar nav {
+    max-width: var(--maxw); margin: 0 auto; padding: 13px 32px;
+    display: flex; justify-content: flex-end; gap: 34px; flex-wrap: wrap;
+    font-size: 15.5px; font-weight: 400;
+  }
+  header.topbar nav a { padding: 4px 13px; border-radius: 999px; transition: color .3s ease; }
+
+  .wrap {
+    position: relative; z-index: 1; max-width: var(--maxw); margin: 0 auto;
+    padding: 102px 32px 220px;
+    display: flex; flex-wrap: wrap; gap: 76px; align-items: flex-start;
+  }
+
+  /* 왼쪽 프로필 — 스크롤해도 따라옵니다 */
+  aside.profile {
+    flex: 1 1 230px; min-width: 210px; max-width: 290px;
+    position: sticky; top: var(--navh); align-self: flex-start;
+    display: flex; flex-direction: column; gap: 16px; text-align: center;
+  }
+  aside.profile .photo-wrap {
+    position: relative; width: 100%; height: 250px; border-radius: 10px; overflow: hidden;
+    background: #EFECE6;
+  }
+  aside.profile img.portrait {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+  }
+  /* 두번째 사진 — 평소엔 투명, 마우스를 올리면 서서히 나타납니다 */
+  aside.profile .photo-wrap img.portrait-hover {
+    position: absolute; top: 0; left: 0;
+    opacity: 0; transition: opacity .35s ease;
+  }
+  aside.profile .photo-wrap:hover img.portrait-hover { opacity: 1; }
+  .p-name  { margin: 16px 0 0; font-size: 20px; line-height: 1.1; font-weight: 600; }
+  .p-role  { margin: 14px 0 0; font-size: 15px; line-height: 1.35; letter-spacing: .3px; }
+  .p-mail  { margin: 14px 0 0; font-size: 12px; letter-spacing: -.2px; }
+  .p-loc   { margin: 6px 0 0;  font-size: 11px; color: var(--ink-faint); }
+  .p-links { display: flex; justify-content: center; align-items: center; gap: 24px; margin-top: 26px; opacity: .86; }
+  .p-links img { display: block; opacity: .85; }
+  .p-links .cv { font-family: Helvetica, Arial, sans-serif; font-size: 14px; font-weight: 600;
+                 letter-spacing: -.07em; color: #93908E; }
+
+  main { flex: 999 1 380px; min-width: 0; display: flex; flex-direction: column; gap: 44px; }
+  section { scroll-margin-top: var(--navh); }
+
+  h2.label {
+    margin: 0 0 8px; font-family: 'IBM Plex Mono', monospace; font-size: 11.5px;
+    font-weight: 500; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--ink-faint); border-top: 1px solid var(--line); padding-top: 10px;
+  }
+  .sec-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px;
+              border-top: 1px solid var(--line); padding-top: 10px; margin-bottom: 6px; }
+  .sec-head h2 { margin: 0; font-family: 'IBM Plex Mono', monospace; font-size: 11.5px;
+                 font-weight: 500; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-faint); }
+  .sec-head span { font-family: 'IBM Plex Mono', monospace; font-size: 11px;
+                   letter-spacing: .06em; color: #A09A8C; }
+
+  .about-lead { margin: 0 0 12px; font-size: 16px; line-height: 1.6; max-width: 68ch; }
+  .about-body { margin: 0 0 18px; font-size: 16px; line-height: 1.6; max-width: 68ch; color: var(--ink-soft); }
+
+  /* 키워드 칩 — 천천히 떠다니고, 마우스를 올리면 살짝 튑니다 */
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 22px; }
+  .chips span {
+    display: inline-block; will-change: transform;
+    font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; letter-spacing: .05em;
+    padding: 5px 10px; border: 1px solid #DEDAD2; border-radius: 999px; cursor: default;
+    background: rgba(250,249,247,.42); backdrop-filter: blur(9px);
+    transition: border-color .2s;
+    animation: kwFloat 5.4s ease-in-out infinite;
+  }
+  @keyframes kwFloat {
+    0%,100% { transform: translateY(0) rotate(0deg); }
+    33%     { transform: translateY(-4px) rotate(-.6deg); }
+    66%     { transform: translateY(3px) rotate(.5deg); }
+  }
+  @keyframes expand { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+
+  /* News */
+  .news-row { display: grid; grid-template-columns: minmax(0,74px) minmax(0,1fr); gap: 14px;
+              padding: 6px 0; align-items: baseline; }
+  .news-row .date { font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; color: var(--ink-faint); }
+  .news-row p { margin: 0; font-size: 15px; line-height: 1.5; color: var(--ink-soft); }
+
+  /* Research / Projects 공통 — 제목을 누르면 펼쳐집니다 */
+  .group { margin-bottom: 14px; }
+  .group > .gl { margin: 12px 0 2px; font-family: 'IBM Plex Mono', monospace;
+                 font-size: 11px; letter-spacing: .1em; }
+  .row { border-top: 1px solid var(--line-soft); transition: padding-left .25s ease, background .25s ease; }
+  .row:hover { padding-left: 10px;
+    background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,.26) 12%,
+                rgba(255,255,255,.42) 28%, rgba(255,255,255,.2) 62%, rgba(255,255,255,0) 92%); }
+  .row .head { display: grid; gap: 14px; align-items: start; padding: 11px 0; cursor: pointer; }
+  .row.pub  .head { grid-template-columns: minmax(0,1fr) auto; }
+  .row.proj .head, .row.work .head { grid-template-columns: minmax(0,86px) minmax(0,1fr) auto; }
+  .row .title { margin: 0 0 3px; font-size: 16px; line-height: 1.35; font-weight: 600; letter-spacing: -.012em; }
+  .row .meta  { margin: 0; font-size: 13.5px; line-height: 1.45; color: var(--ink-mute); }
+  .row .meta2 { margin: 0; font-size: 13.5px; line-height: 1.45; color: var(--ink-soft); }
+    /* 논문 목록의 LINK 표시 */
+  .meta2 a.lnk { font-family: 'IBM Plex Mono', monospace; font-size: 10.5px;letter-spacing: .08em; color: var(--accent); margin-left: 8px;}
+  .meta2 a.lnk:hover { text-decoration: underline; }
+
+  .row .when  { font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; color: var(--ink-faint); padding-top: 3px; }
+  .row .sign  { font-family: 'IBM Plex Mono', monospace; font-size: 15px; color: var(--accent); line-height: 1.3; padding-top: 1px; }
+  .row .body  { padding: 0 0 16px; animation: expand .28s cubic-bezier(.2,.8,.2,1) both; }
+  .row .body .context { margin: 0 0 8px; font-family: 'IBM Plex Mono', monospace;
+                        font-size: 11.5px; letter-spacing: .06em; color: var(--ink-faint); }
+  /* 발행물 이미지 — context가 있으면 그 아래, 불렛 리스트 위에 표시됩니다 (선택 사항)
+     흰 배경 + 안쪽 여백을 줘서 배경이 투명한 PNG 도 잘리거나 튀지 않고 카드처럼 보입니다 */
+  .row .body .pub-image { display: block; width: 95%; max-width: 532px; height: auto;
+                          margin: 4px 0 16px; padding: 14px; box-sizing: border-box;
+                          background: #FFFFFF; border: 1px solid var(--line);
+                          border-radius: 12px; }
+  .row .body ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 6px; max-width: 70ch; }
+  .row .body li { display: grid; grid-template-columns: 12px minmax(0,1fr); gap: 8px;
+                  font-size: 14.5px; line-height: 1.55; color: var(--ink-soft); }
+  .row .body li i { color: var(--accent); font-style: normal; }
+  .row .body .p-body { margin: 0 0 8px; font-size: 14.5px; line-height: 1.55; color: var(--ink-soft); max-width: 70ch; }
+  .row .body .p-out  { margin: 0; font-size: 14.5px; line-height: 1.5; color: var(--accent); max-width: 70ch; }
+
+  footer.foot { border-top: 1px solid var(--line); padding-top: 18px; }
+  footer.foot p { margin: 0; font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink-faint); }
+
+  /* 마우스를 따라다니는 빛 (스크롤 위치에 따라 파랑→청록→연두) */
+  #glow { position: fixed; top: 0; left: 0; width: 400px; height: 400px; margin: -200px 0 0 -200px;
+          border-radius: 50%; filter: blur(18px); pointer-events: none; z-index: 0; opacity: 0;
+          transition: opacity .5s ease; }
+
+  /* ── 좁은 화면 (태블릿 / 모바일) ──────────────────────────────
+     한 컬럼으로 바뀌고, 프로필은 위쪽에 고정 해제됩니다.       */
+  @media (max-width: 860px) {
+    header.topbar nav { justify-content: center; gap: 18px; padding: 11px 18px; font-size: 14px; }
+    header.topbar nav a { padding: 4px 6px; }
+    .wrap { padding: 86px 20px 100px; gap: 34px; flex-direction: column; }
+    aside.profile {
+      position: static; max-width: none; width: 100%;
+      flex: 1 1 auto; flex-direction: row; align-items: center;
+      gap: 20px; text-align: left;
+    }
+    aside.profile .photo-wrap { width: 132px; height: 168px; flex: 0 0 132px; }
+    aside.profile > div { flex: 1 1 auto; min-width: 0; }
+    .p-name { margin: 0; font-size: 22px; }
+    .p-role { margin: 8px 0 0; }
+    .p-links { justify-content: flex-start; margin-top: 16px; }
+    main { width: 100%; flex: 1 1 auto; gap: 34px; }
+    .sec-head { flex-wrap: wrap; gap: 6px; }
+    .sec-head span { font-size: 10px; }
+    .row.proj .head, .row.work .head { grid-template-columns: minmax(0,1fr) auto; }
+    .row.proj .head .when, .row.work .head .when { grid-column: 1 / -1; padding-top: 0; }
+    .row .title { font-size: 15.5px; }
+    .news-row { grid-template-columns: minmax(0,60px) minmax(0,1fr); gap: 10px; }
+    .about-lead, .about-body { font-size: 15.5px; }
+  }
+  @media (max-width: 520px) {
+    .wrap { padding: 80px 16px 80px; }
+    aside.profile { flex-direction: column; align-items: flex-start; gap: 14px; }
+    aside.profile .photo-wrap { width: 100%; height: 260px; flex: 0 0 auto; }
+    header.topbar nav { gap: 10px; font-size: 13px; }
+    .news-row { grid-template-columns: 1fr; gap: 2px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .chips span { animation: none; }
+    #glow { display: none; }
+  }
+</style>
+</head>
+
+<body>
+
+<div id="glow"></div>
+
+<!-- 상단 메뉴 (메뉴 이름을 바꾸면 아래 섹션 id 도 같이 바꾸세요) -->
+<header class="topbar">
+  <nav>
+    <a href="#about"     data-nav="about">About Me</a>
+    <a href="#news"      data-nav="news">News</a>
+    <a href="#research"  data-nav="research">Research</a>
+    <a href="#projects"  data-nav="projects">Projects</a>
+    <a href="#work"      data-nav="work">Work</a>
+  </nav>
+</header>
+
+<div class="wrap">
+
+  <!-- ★ PROFILE — 사진 / 이름 / 소속 / 이메일 / 링크 -->
+  <aside class="profile">
+    <!-- 사진 두 장: 평소엔 portrait.jpg, 마우스를 올리면 portrait2.jpg 가 보입니다 -->
+    <div class="photo-wrap">
+      <img class="portrait" src="./assets/portrait.jpg" alt="Jisun Hwang in a close-up portrait. She is smiling gently and looking toward the camera. The background is plain and neutral, and the overall tone feels warm and approachable.">
+      <img class="portrait portrait-hover" src="./assets/portrait2.jpg" alt="Jisun Hwang in a secondary portrait. She is facing slightly to one side with a calm expression. The background is simple and neutral, and the overall tone feels thoughtful and relaxed.">
+    </div>
+    <div>
+      <p class="p-name">Jisun Hwang</p>
+      <p class="p-role">PhD Applicant in HCI</p>
+      <p class="p-mail mono"><a href="mailto:bibionidae@ajou.ac.kr">bibionidae@ajou.ac.kr</a></p>
+      <p class="p-loc mono">Suwon, South Korea</p>
+
+      <!-- 링크 3개: href="#" 를 실제 주소로 바꾸세요 -->
+      <div class="p-links">
+        <a href="https://scholar.google.com/citations?hl=en&user=Ie_hs3IAAAAJ&view_op=list_works&gmla=AKCpqFzDCymsBtsL8ajC0E_VJTJplFGSRQNKnFdE8Zsh1b9ISBjUiAUqqfFfq9WomGNLmopLfvneQiva8zUYEN8JJ0YQihp4SftllTkjWkSaabRlwaQarD5IkIllwfaY0fJ4icafYVsA7dN1JNgU8vI&iaan=%ED%99%A9+%EC%A7%80%EC%84%A0" title="Google Scholar"><img src="./assets/scholar.png" alt="Google Scholar icon, a blue academic symbol on a white background" style="height:16px"></a>
+        <a href="./assets/CV_JisunHwang.pdf" title="CV" class="cv">CV</a>
+        <a href="https://www.linkedin.com/in/jisun-hwang-9a25606b" title="LinkedIn"><img src="./assets/linkedin.png" alt="LinkedIn icon, a blue square with a white lowercase in shape" style="height:15px; width:15px"></a>
+      </div>
+    </div>
+  </aside>
+
+  <main>
+
+    <!-- ★ ABOUT — 소개 문단 -->
+    <section id="about">
+      <h2 class="label" style="border-style:none">About me</h2>
+      <!-- 링크는 <a href="주소">글자</a> 형태입니다. 주소를 모르는 곳은 href="#" 로 두었으니
+           실제 페이지 주소를 찾으면 # 자리에 넣으세요. 링크가 필요 없으면 <a ...> 와 </a> 만 지우면 됩니다. -->
+      <p class="about-lead">👋 Hello! I am a researcher at the <a href="https://biz-e.ajou.ac.kr/biz-e/index.do">Ajou University School of Business</a>, where I work with <a href="https://biz-e.ajou.ac.kr/biz-e/faculty/mis.do?mode=view&empl_no=$cms$EwBhFYEZoTgdiA&mngt_no=$cms$EwBhFYEZoTgdiA&uniCd=mj&deptCd=$cms$LIKQjADFCsZA&cate=2">Juyoung Kang</a> and <a href="https://biz-e.ajou.ac.kr/biz-e/faculty/mis.do?mode=view&empl_no=$cms$EwBhE4EZuBWI&mngt_no=$cms$EwBhE4EZuBWI&uniCd=mj&deptCd=$cms$LIKQjADFCsZA&cate=2">Cheul Rhee</a>. I received my M.S. in Business Analytics from Ajou University, and before that my B.S. in Living Design from <a href="https://www.konkuk.ac.kr/sites/en/index.do">Konkuk University</a> — a path that took me from designing physical retail spaces to studying the decisions behind them.</p>
+      <p class="about-body">My research interests sit broadly in the interaction between people and non-human entities — AI, robots, and interfaces — and I am still in the process of finding my own footing within that space. During my master's, I studied <strong>human–AI collaboration in the UI design process</strong>, building agents that work alongside designers rather than replacing them. More recently, I have become interested in <strong>modality and the heuristics</strong> it activates, and in how trust formed around one cue <em>transfers</em> to judgments the cue never directly spoke to. I am applying to PhD programs in HCI.</p>
+
+      <!-- ★ KEYWORDS — 연구 키워드. <span> 을 지우거나 새로 추가하면 됩니다 -->
+      <div class="chips">
+        <span>HCI</span>
+        <span>Human</span>
+        <span>Behavior</span>
+        <span>AI</span>
+        <span>Heuristics</span>
+        <span>Design</span>
+        <span>Data Analysis</span>
+        <span>Business</span>
+      </div>
+    </section>
+
+    <!-- News / Research / Projects 의 내용은 파일 아래 SITE_DATA 에서 편집합니다 -->
+    <section id="news">
+      <h2 class="label">News</h2>
+      <div id="news-list"></div>
+    </section>
+
+    <section id="research">
+      <div class="sec-head">
+        <h2>Research</h2>
+        <span>CLICK A TITLE TO EXPAND</span>
+      </div>
+      <div id="research-list"></div>
+    </section>
+
+    <section id="projects">
+      <div class="sec-head">
+        <h2>Projects</h2>
+      </div>
+      <div id="projects-list"></div>
+    </section>
+
+    <section id="work">
+      <div class="sec-head">
+        <h2>Work Experience</h2>
+      </div>
+      <div id="work-list"></div>
+    </section>
+
+    <footer class="foot">
+      <!-- 내용을 고칠 때마다 날짜를 갱신하세요 -->
+      <p>Last Update: September 2026</p>
+    </footer>
+
+  </main>
+</div>
+
+
+<script>
+/* ==============================================================================
+   ★ SITE_DATA — News / Research / Projects 내용은 전부 여기서 편집합니다
+   ------------------------------------------------------------------------------
+   · 새 항목은 기존 { ... } 를 복사해 붙이고 내용만 바꾸는 방식이 가장 안전합니다.
+   · 항목 사이의 쉼표(,)를 빠뜨리지 마세요.
+   · 순서를 바꾸면 화면 순서도 그대로 바뀝니다 (최신 항목을 위로 두세요).
+   ============================================================================ */
+const SITE_DATA = {
+
+  /* ── NEWS ──────────────────────────────────────────────────────────────────
+     date: 왼쪽에 보이는 날짜 (예: '2026.07')
+     text: 한 줄 소식                                                        */
+  news: [
+    { date: '2026.02', text: 'Received the Outstanding Thesis Award 🏆 (Dean’s Award) — given to one graduate per year.' },
+    { date: '2026.02', text: 'Completed my M.S. in Business Analytics at Ajou University.' },
+    { date: '2026.01', text: 'Presented “Vibe Design” at HICSS 59. Felt the vibe in Maui. Aloha 🌺' },
+    { date: '2026.01', text: 'Paper accepted by the Journal of Intelligence and Information Systems.' },
+    { date: '2025.12', text: 'Certified as a Big-Data Analysis Engineer (National Technical Qualification), Korea Data Agency.' },
+    { date: '2025.12', text: 'Co-authored a policy report published by the Science and Technology Policy Institute.' },
+    { date: '2025.04', text: 'Paper accepted by the Journal of Intelligence and Information Systems.' },
+    { date: '2025.02', text: 'Paper accepted by the Journal of Society for e-Business Studies.' },
+    { date: '2024.10', text: 'Received the Best Presentation Paper Award 🥇 at the E-Bridge Society Fall Conference.' }
+  ],
+
+  /* ── RESEARCH ──────────────────────────────────────────────────────────────
+     상태별 그룹입니다. label 과 color 를 자유롭게 바꿀 수 있습니다.
+       label   : 그룹 제목 (예: 'IN PROGRESS', 'UNDER REVIEW', 'PUBLISHED')
+       color   : 그룹 제목 색
+       items[] : 논문/연구 목록
+           title   : 제목
+           authors : 저자 (본인 강조는 '— first author' 처럼 뒤에 덧붙이면 됩니다)
+           venue   : 학회·저널·연도
+           context : 펼쳤을 때 맨 위에 나오는 한 줄 (대문자 권장)
+           image   : (선택) 불렛 목록 위에 넣을 연구 관련 사진 경로. 예: './assets/research/vibe-design.jpg'
+                     필요 없으면 이 줄을 아예 빼거나 image: '' 로 두면 됩니다.
+           points  : 펼쳤을 때 나오는 불릿 목록                             */
+  research: [
+    {
+      label: 'IN PROGRESS', color: '#E08214',
+      items: [
+        {
+          title: 'Multimodal Integration of EEG and Eye-Tracking for Establishing Consumer Reassurance Mechanisms in Intelligent Packaging: A Behavioral Immune System Perspective',
+          authors: 'Research in development',
+          venue: 'Ajou University Business School · with Prof. Cheul Rhee & Prof. Juyoung Kang',
+          context: 'MULTIMODAL EEG × EYE-TRACKING STUDY · BEHAVIORAL IMMUNE SYSTEM PERSPECTIVE',
+          image: './assets/research/ip.png',
+          points: [
+            'Develop and currently lead an independent study, "Selective Transfer of Expected Quality from Intelligent Packaging Cues in Online Grocery Shopping," examining how cue modality and third-party certification influence expected food quality across price levels.',
+            "Explore EEG equipment options and build a custom eye-tracking apparatus for the study's neurophysiological measurements.",
+            'Collaborate with an interdisciplinary research team on a three-year study of how intelligent packaging signals shape consumer reassurance and purchase behavior.'
+          ]
+        }
+        /* 진행 중인 연구가 더 있으면 위 { ... } 를 복사해 쉼표로 이어 붙이세요 */
+      ]
+    },
+
+    /* 심사 중인 논문이 생기면 이 그룹의 주석을 풀고 사용하세요
+    {
+      label: 'UNDER REVIEW', color: '#7A6FBF',
+      items: [
+        {
+          title: '논문 제목',
+          authors: 'Hwang, J., & ...',
+          venue: 'CHI 2027 (under review)',
+          context: 'SUBMITTED SEPTEMBER 2026',
+          points: ['한 줄 요약', '기여점']
+        }
+      ]
+    },
+    */
+
+    {
+      label: 'PUBLISHED', color: '#1D6FC0',
+      items: [
+        {
+          title: 'Vibe Design: Human-in-the-loop AI Agents for UI Design with Large Language Models',
+          authors: '<strong>Hwang, J.</strong>, & Kang, J.',
+          venue: 'HICSS 59 · Proc. Hawaii Int. Conf. on System Sciences, 4453–4462 · 2026 <a href="https://doi.org/10.24251/HICSS.2026.530" class="lnk"><strong>Link🔗</strong></a>',
+          context: 'MASTER’S THESIS · OUTSTANDING THESIS AWARD, AJOU GRADUATE SCHOOL',
+          image: './assets/research/vibedesign.png',
+          points: [
+            'Developed Vibe Design, a human–AI collaborative framework that integrates LLM-assisted prototyping and simulated usability testing into a single iterative workflow operating on interface screenshots rather than code.',
+            'Built a multi-agent architecture grounded in the Persona-Scenario-Goal method, in which a Researcher Agent interviews simulated users against seven usability goals, and connected the LLM to a design tool via the Model Context Protocol with human-in-the-loop checkpoints.',
+            'Conducted an exploratory study comparing simulated users grounded in demographics, personas, and interview transcripts, finding that richer user grounding produced feedback more closely aligned with human usability testing.',
+            'Showed that simulated evaluation can complement but not replace real user participation, particularly for higher-level redesign insights.'
+          ]
+        },
+        {
+          title: 'LLM-Based Analysis of Small Business Complaints and Policy Demand Gaps',
+          authors: 'Choi, H., <strong>Hwang, J.</strong>, Lee, H., & Kang, J.',
+          venue: 'Journal of Intelligence and Information Systems, 32(1), 325–349 · 2026 <a href="http://dx.doi.org/10.13088/jiis.2026.32.1.325" class="lnk"><strong>Link🔗</strong></a>',
+          context: 'COMMISSIONED BY SEMAS (Small Enterprise and Market Service)',
+          image: './assets/research/smallbiz.png',
+          points: [
+            'Developed a demand–supply framework to diagnose gaps between government support policies and the grievances of small business owners.',
+            'Scraped community and policy data, applied LLM-based classification and LDA topic modeling to derive grievance types, and built an LLM-based AI agent to match grievances with existing policies.',
+            'Identified 30 grievance types, 10 of which no existing policy addressed, and applied BERTopic to civil complaint data to derive policy improvement directions; presented findings to SEMAS and published them as a research paper.'
+          ]
+        },
+        {
+          title: 'Exploring Physical Store Customer Experience through BERTopic and Importance-Performance Analysis',
+          authors: '<strong>Hwang, J.</strong>, & Kang, J.',
+          venue: 'Journal of Intelligence and Information Systems, 31(2), 85–110 · 2025 <a href="http://dx.doi.org/10.13088/jiis.2025.31.2.085" class="lnk"><strong>Link🔗</strong></a>',
+          context: 'REVIEW-BASED IPA FOR OMNICHANNEL RETAIL',
+          image: './assets/research/IPA.png',
+          points: [
+            'Collected Google Maps and mobile app reviews for 11 major Korean department store locations and applied BERTopic to derive 13 store attributes.',
+            'Estimated attribute-level performance through sentiment analysis and importance through a DNN with SHAP, conducting review-based IPA for each brand.',
+            'Identified product assortment and in-store service as priority improvement areas across all brands, and parking access and food halls as key competitive strengths.',
+            'Extended the analysis to department store apps as an omnichannel touchpoint, finding payment convenience to be a key strength and feature design to fall short of user needs.'
+          ]
+        },
+        {
+          title: 'An Analysis of Disability Dispute for Law Improvement Based on the BERT-LDA Hybrid Model',
+          authors: '<strong>Hwang, J.</strong>, Yoon, T., & Kang, J.',
+          venue: 'The Journal of Society for e-Business Studies, 30(1), 131–154 · 2025 <a href="http://dx.doi.org/10.7838/jsebs.2025.30.1.131" class="lnk"><strong>Link🔗</strong></a>',
+          context: 'TEXT MINING FOR POLICY AND LEGAL IMPROVEMENT',
+          image: './assets/research/bert-lda.png',
+          points: [
+            'Applied a hybrid BERT-LDA topic modeling approach, combining BERT and LDA vectors via an autoencoder with K-means clustering, to derive legal dispute types faced by people with developmental disabilities.',
+            'Analyzed news articles to identify key issues, then selected adult guardianship as a focal topic and analyzed legal counseling data to derive related dispute types.',
+            'Showed that the hybrid model produced more clearly separated topic clusters than a BERT-only model, based on silhouette scores.',
+            'Found that disputes concentrated on property management under guardianship, with aging-related topics reflecting the growing prevalence of cognitive impairment.'
+          ]
+        }
+      ]
+    },
+
+    {
+      label: 'REPORT', color: '#5F5B52',
+      items: [
+        {
+          title: 'Post-2030 Global Science, Technology and Innovation Agenda Study (Year 2)',
+          authors: 'Sun, I., Lee, D., Hwang, E., et al. (incl. <strong>Hwang, J.</strong>)',
+          venue: 'Policy Research Report 2025-16-01, Science and Technology Policy Institute (STEPI) · 2025 <a href="https://www.nkis.re.kr/subject_view3.do?volId=IPVOL000000000012095&articleSeq=1" class="lnk"><strong>Link🔗</strong></a>',
+          context: 'COMMISSIONED BY STEPI (SCIENCE AND TECHNOLOGY POLICY INSTITUTE)',
+          image: './assets/research/KIM.png',
+          points: [
+            'Collected 7,934 AI-related national R&D projects (2021–2025) from NTIS and applied BERTopic with a multilingual SBERT model to derive 80 AI research topics, labeled and grouped into 16 domains using an LLM.',
+            'Analyzed topic trends over time and detected weak signals of emerging AI research areas using a Keyword Issue Map (KIM).',
+            'Co-authored the resulting government policy report as an external author (STEPI Policy Research 2025-16-01).'
+          ]
+        }
+      ]
+    }
+  ],
+
+  /* ── PROJECTS ──────────────────────────────────────────────────────────────
+       when    : 왼쪽 연도
+       title   : 프로젝트 이름
+       role    : 역할,  org: 소속/회사
+       body    : 펼쳤을 때 설명
+       image   : (선택) 설명 위에 넣을 사진 경로. 예: './assets/projects/lg.jpg'
+                 필요 없으면 image: '' 로 두면 됩니다.
+       outcome : 결과 한 줄 (파란색으로 강조됩니다)                        */
+  projects: [
+    { when: 'Dec 2025 – Feb 2026', title: "LG Electronics' Internal AI System Project", role: 'UI/UX Designer', org: 'WithData Inc.',
+      body: 'Designed an identify–intervene debugging loop, informed by HCI research on agent debugging, that lets users locate where chatbot output diverged from expectations and test corrections directly. Redesigned the chatbot interface to address usability complaints, organizing screen flows around familiar chat patterns and adding workflow features such as source file preview and product search.',
+      image: '',
+      outcome: 'Delivered the full UI/UX design specification, which contributed to winning the LG Electronics contract.' },
+    { when: 'Jun 2025 - Aug 2025', title: 'Product strategy for an emerging beauty brand', role: 'Research Intern', org: 'UST Inc.',
+      body: 'Collected consumer reviews across multiple web and mobile platforms and applied BERT-LDA hybrid topic modeling to extract key consumer concerns. Conducted Importance-Performance Analysis on rating data to find where the brand most needed to improve, and analyzed 2017–2025 search trends to track ingredient and formulation trends by product category.',
+      image: '',
+      outcome: 'Identified 4 priority improvement areas and proposed differentiation points for the brand\'s hero product; authored and presented the final report.' },
+    { when: 'Dec 2024 – Feb 2025', title: 'AI agent for trending-keyword video generation', role: 'Research Intern', org: 'Intellicode Inc.',
+      body: 'Developed the image generation component of a team-built AI agent that automatically produces videos from trending keywords. Designed a diffusion-based compositing pipeline in ComfyUI to flexibly combine virtual models with product images, and integrated state-of-the-art image generation models.',
+      image: '',
+      outcome: 'Built a working image compositing pipeline for the agent; presented the final project report.' },
+    { when: 'Jun 2024 - Aug 2024', title: 'Predictive analysis of tool wear in CNC processes', role: 'Research Intern', org: 'Nextorm Inc.',
+      body: 'Analyzed field sensor data from CNC processes to predict tool wear, aiming to replace operator judgment with data-driven detection. Trained a Random Forest model and applied SHAP values to measure how much each variable influenced the prediction.',
+      image: '',
+      outcome: 'Identified data contamination from manual machine stoppages as the key barrier to significant results; presented recommendations for data collection.' }  
+    ],
+
+  /* ── WORK EXPERIENCE ───────────────────────────────────────────────────────
+       when    : 근무 기간
+       title   : 직함/프로젝트명
+       role    : 역할,  org: 회사명
+       body    : 펼쳤을 때 설명
+       image   : (선택) 설명 위에 넣을 사진 경로. 예: './assets/work/gnco.jpg'
+                 필요 없으면 image: '' 로 두면 됩니다.
+       outcome : 결과 한 줄 (파란색으로 강조됩니다)                        */
+  work: [
+    { when: 'Jan 2023 – Sep 2023', title: 'Visual Merchandising, Thursday Island', role: 'Visual Merchandise Designer', org: 'GNCO Co., Ltd.',
+      body: 'Planned and designed visual displays for most of the brand\'s offline touchpoints, including in-store displays and pop-up stores, and supervised on-site execution. Developed weekly mannequin styling guidelines for new arrivals, coordinated implementation with store managers nationwide, and reported weekly sales of featured display products to the CEO.',
+      image: '',
+      outcome: 'Visual components I designed were adopted as the main visuals for the brand\'s official social media and website.' },
+    { when: 'Apr 2022 – Dec 2022', title: 'AR face-tracking avatar NFT service', role: '3D Designer', org: 'RealBits Inc.',
+      body: 'Worked with a developer on a 3D character NFT service that let purchasers use their characters as AR face-tracking avatars across live streaming and messaging platforms. Conceived and modeled the characters and a range of accessories in Blender for Gen Z and millennial users.',
+      image: '',
+      outcome: 'Launched the service with a full set of 3D characters and accessories.' }  
+    ]
+};
+
+
+/* ==============================================================================
+   아래는 화면을 그리는 코드입니다. 내용 수정만 할 경우 건드리지 않아도 됩니다.
+   ============================================================================ */
+(function () {
+  const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+  /* News */
+  document.getElementById('news-list').innerHTML = SITE_DATA.news.map(n => `
+    <div class="news-row">
+      <span class="date">${esc(n.date)}</span>
+      <p>${esc(n.text)}</p>
+    </div>`).join('');
+
+  /* Research */
+  document.getElementById('research-list').innerHTML = SITE_DATA.research.map(g => `
+    <div class="group">
+      <p class="gl" style="color:${esc(g.color)}">${esc(g.label)}</p>
+      ${g.items.map(it => `
+        <div class="row pub">
+          <div class="head" data-toggle>
+            <div>
+              <p class="title">${esc(it.title)}</p>
+              <p class="meta">${it.authors}</p>
+              <p class="meta2">${it.venue}</p>
+            </div>
+            <span class="sign">+</span>
+          </div>
+          <div class="body" hidden>
+            <p class="context">${esc(it.context || '')}</p>
+            ${it.image ? `<img class="pub-image" src="${esc(it.image)}" alt="${esc(it.title)}">` : ''}
+            <ul>${(it.points || []).map(p => `<li><i>—</i><span>${esc(p)}</span></li>`).join('')}</ul>
+          </div>
+        </div>`).join('')}
+    </div>`).join('');
+
+  /* Projects */
+  document.getElementById('projects-list').innerHTML = SITE_DATA.projects.map(j => `
+    <div class="row proj">
+      <div class="head" data-toggle>
+        <span class="when">${esc(j.when)}</span>
+        <div>
+          <p class="title">${esc(j.title)}</p>
+          <p class="meta">${esc(j.role)} · ${esc(j.org)}</p>
+        </div>
+        <span class="sign">+</span>
+      </div>
+      <div class="body" hidden>
+        ${j.image ? `<img class="pub-image" src="${esc(j.image)}" alt="${esc(j.title)}">` : ''}
+        <p class="p-body">${esc(j.body)}</p>
+        <p class="p-out">${esc(j.outcome)}</p>
+      </div>
+    </div>`).join('');
+
+  /* Work Experience */
+  document.getElementById('work-list').innerHTML = SITE_DATA.work.map(j => `
+    <div class="row work">
+      <div class="head" data-toggle>
+        <span class="when">${esc(j.when)}</span>
+        <div>
+          <p class="title">${esc(j.title)}</p>
+          <p class="meta">${esc(j.role)} · ${esc(j.org)}</p>
+        </div>
+        <span class="sign">+</span>
+      </div>
+      <div class="body" hidden>
+        ${j.image ? `<img class="pub-image" src="${esc(j.image)}" alt="${esc(j.title)}">` : ''}
+        <p class="p-body">${esc(j.body)}</p>
+        <p class="p-out">${esc(j.outcome)}</p>
+      </div>
+    </div>`).join('');
+
+  /* 제목 클릭 → 펼치기 / 접기 */
+  document.querySelectorAll('[data-toggle]').forEach(head => {
+    head.addEventListener('click', (e) => {
+      if (e.target.closest('a')) return;
+      const body = head.nextElementSibling;
+      const sign = head.querySelector('.sign');
+      const open = body.hasAttribute('hidden');
+      if (open) { body.removeAttribute('hidden'); sign.textContent = '–'; }
+      else { body.setAttribute('hidden', ''); sign.textContent = '+'; }
+    });
+  });
+
+  /* 상단 메뉴: 현재 보고 있는 섹션 색을 스크롤 위치에 맞춰 바꿉니다 */
+  const links = Array.from(document.querySelectorAll('[data-nav]'));
+  const sections = links.map(l => document.getElementById(l.dataset.nav)).filter(Boolean);
+  const mix = (a, b, u) => a.map((v, i) => Math.round(v + (b[i] - v) * u));
+  const A = [29, 122, 196], B = [20, 150, 140], C = [96, 172, 36];   /* 파랑 → 청록 → 연두 */
+  const accent = () => {
+    const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+    const u = Math.min(1, Math.max(0, window.scrollY / max));
+    const c = u < .5 ? mix(A, B, u / .5) : mix(B, C, (u - .5) / .5);
+    return 'rgb(' + c.join(',') + ')';
+  };
+  let active = null;
+  const spy = () => {
+    const line = Math.max(150, innerHeight * 0.32);
+    const max = document.documentElement.scrollHeight - innerHeight;
+    let cur = sections[0];
+    sections.forEach(s => { if (s.getBoundingClientRect().top <= line) cur = s; });
+    if (window.scrollY >= max - 8) cur = sections[sections.length - 1];
+    links.forEach(l => {
+      const on = l.dataset.nav === (cur && cur.id);
+      if (on) active = l;
+      l.style.color = on ? accent() : 'var(--ink)';
+    });
+  };
+  addEventListener('scroll', () => { spy(); if (active) active.style.color = accent(); }, { passive: true });
+  spy();
+
+  /* 마우스를 따라다니는 빛 */
+  const glow = document.getElementById('glow');
+  if (glow && matchMedia('(pointer:fine)').matches) {
+    const G1 = [56, 178, 232], G2 = [72, 214, 196], G3 = [148, 240, 92];
+    let tx = 0, ty = 0, cx = 0, cy = 0, started = false;
+    addEventListener('pointermove', e => {
+      tx = e.clientX; ty = e.clientY;
+      if (!started) { started = true; cx = tx; cy = ty; glow.style.opacity = '1'; }
+    }, { passive: true });
+    (function tick() {
+      cx += (tx - cx) * .08; cy += (ty - cy) * .08;
+      glow.style.transform = `translate(${cx}px,${cy}px)`;
+      const doc = Math.max(1, document.documentElement.scrollHeight - innerHeight);
+      const u = Math.min(1, Math.max(0, (scrollY + cy) / (doc + innerHeight)));
+      const c = u < .5 ? mix(G1, G2, u / .5) : mix(G2, G3, (u - .5) / .5);
+      const rgb = c.join(',');
+      glow.style.background = `radial-gradient(circle, rgba(${rgb},.30) 0%, rgba(${rgb},.11) 45%, rgba(${rgb},0) 70%)`;
+      requestAnimationFrame(tick);
+    })();
+  }
+
+  /* 키워드 칩: 떠다니는 타이밍을 서로 다르게 */
+  document.querySelectorAll('.chips span').forEach((c, i) => {
+    c.style.animationDelay = (i * 0.47).toFixed(2) + 's';
+    c.style.animationDuration = (4.6 + (i % 4) * 0.7).toFixed(1) + 's';
+  });
+})();
+</script>
+</body>
+</html>
