@@ -5,7 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="PhD applicant in HCI, interested in human–AI interaction. M.S. in Business Analytics, Ajou University.">
 <meta property="og:description" content="PhD applicant in HCI, interested in human–AI interaction. M.S. in Business Analytics, Ajou University.">
-<title>Jisun Hwang ✳︎ HCI</title>
+<title>Jisun Hwang | HCI</title>
+<link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="./assets/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="./assets/apple-touch-icon.png">
 
 <!--
 ================================================================================
@@ -44,7 +47,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 
 <style>
   /* ────────────────────────────────────────────────────────────
@@ -92,10 +95,21 @@
     font-size: 15.5px; font-weight: 400;
   }
   header.topbar nav a { padding: 4px 13px; border-radius: 999px; transition: color .3s ease; }
+  /* 왼쪽 상단 홈 마크 ✻ */
+  header.topbar nav a.brand { margin-right: auto; padding: 0 2px; font-size: 32px; font-weight: 700; line-height: 1; color: var(--ink); transition: transform .5s ease, color .3s ease; }
+  header.topbar nav a.brand:hover { color: var(--accent); transform: rotate(90deg); }
+  /* 외부 페이지로 나가는 링크(Portfolio) — 스크롤 메뉴와 구분되도록 얇은 테두리 + ↗ */
+  header.topbar nav a.nav-ext {
+    display: inline-flex; align-items: center; gap: 5px;
+    border: 1px solid color-mix(in srgb, var(--ink) 22%, transparent);
+    transition: color .3s ease, border-color .3s ease;
+  }
+  header.topbar nav a.nav-ext span { font-size: .85em; }
+  header.topbar nav a.nav-ext:hover { color: var(--accent); border-color: var(--accent); }
 
   .wrap {
     position: relative; z-index: 1; max-width: var(--maxw); margin: 0 auto;
-    padding: 102px 32px 220px;
+    padding: 40px 32px 220px;
     display: flex; flex-wrap: wrap; gap: 76px; align-items: flex-start;
   }
 
@@ -218,6 +232,7 @@
   @media (max-width: 860px) {
     header.topbar nav { justify-content: center; gap: 18px; padding: 11px 18px; font-size: 14px; }
     header.topbar nav a { padding: 4px 6px; }
+    header.topbar nav a.brand { margin-right: 0; flex-basis: 100%; text-align: center; padding: 0 0 4px; }
     .wrap { padding: 86px 20px 100px; gap: 34px; flex-direction: column; }
     aside.profile {
       position: static; max-width: none; width: 100%;
@@ -250,6 +265,126 @@
     .chips span { animation: none; }
     #glow { display: none; }
   }
+  /* ────────────────────────────────────────────────────────────
+     ★ HERO — 첫 화면. 왼쪽 문장 + 오른쪽 회전 키워드 다이어그램
+     ──────────────────────────────────────────────────────────── */
+  .hero {
+    position: relative; z-index: 1;
+    max-width: var(--maxw); margin: 0 auto;
+    min-height: 100vh; min-height: 100svh;
+    padding: calc(var(--navh) + 24px) 32px 140px;
+    display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
+    gap: 40px; align-items: center; justify-items: center;
+  }
+  .hero-text p.hero-lead {
+    margin: 0; width: 100%; max-width: 595px; font-size: clamp(23px, 2.6vw, 34px); line-height: 1.42;
+    font-weight: 500; letter-spacing: -.028em; color: var(--ink); text-wrap: pretty;
+  }
+  /* 강조 1: 가운데 키워드 'designer' — 형광펜 (마우스 빛의 연두색과 이어집니다) */
+  .hero-text .hl {
+    font-family: 'Instrument Serif', Georgia, serif; font-style: italic; font-weight: 400;
+    font-size: 1.1em; letter-spacing: -.01em;
+    background: linear-gradient(transparent 58%, #E2F5B0 58%, #E2F5B0 92%, transparent 92%);
+    padding: 0 .08em;
+  }
+  /* 강조 2: 다이어그램 키워드 — 키워드마다 다른 서체 표정을 줍니다.
+     kw-obj / kw-space / kw-data / kw-res / kw-ui / kw-hai 클래스를 바꿔 조합할 수 있습니다.
+     마우스를 올리면 오른쪽 라벨도 함께 켜집니다 */
+  .hero-text .kw {
+    cursor: default; white-space: nowrap;
+    transition: color .25s ease, text-decoration-color .25s ease,
+                border-color .25s ease, background-color .25s ease;
+  }
+  .hero-text .kw.on { color: var(--accent); text-decoration-color: var(--accent); border-color: var(--accent); }
+
+  /* objects — 손으로 만든 것: 세리프 이탤릭, 조금 크게 */
+  .hero-text .kw-obj {
+    font-family: 'Instrument Serif', Georgia, serif; font-style: italic; font-weight: 400;
+    font-size: 1.14em; letter-spacing: -.012em;
+    text-decoration: underline; text-decoration-thickness: 1.5px; text-underline-offset: .14em;
+    text-decoration-color: color-mix(in srgb, var(--ink) 28%, transparent);
+  }
+  /* spaces — 넓은 자간으로 공간감 */
+  .hero-text .kw-space {
+    font-weight: 500; font-size: .74em; letter-spacing: .26em; text-transform: uppercase;
+    padding-left: .06em;
+  }
+  /* data analysis — 모노 + 옅은 판면, 분석의 질감 */
+  .hero-text .kw-data {
+    font-family: 'IBM Plex Mono', monospace; font-weight: 500;
+    font-size: .76em; letter-spacing: -.01em;
+    background: rgba(29,111,192,.07); border-radius: 4px; padding: .12em .32em;
+  }
+  /* research — 세리프 정체(로만), 점선 밑줄 */
+  .hero-text .kw-res {
+    font-family: 'Instrument Serif', Georgia, serif; font-style: normal; font-weight: 400;
+    font-size: 1.1em; letter-spacing: .004em;
+    text-decoration: underline dotted; text-decoration-thickness: 1.5px; text-underline-offset: .2em;
+    text-decoration-color: color-mix(in srgb, var(--ink) 34%, transparent);
+  }
+  /* interfaces — 얇은 테두리로 화면 프레임처럼 */
+  .hero-text .kw-ui {
+    font-weight: 600; font-size: .84em; letter-spacing: -.01em;
+    border: 1px solid color-mix(in srgb, var(--ink) 26%, transparent);
+    border-radius: 5px; padding: .06em .3em;
+  }
+  /* human–AI interaction — 문장의 도착점: 가장 크게, 옅은 형광 */
+  .hero-text .kw-hai {
+    font-family: 'Instrument Serif', Georgia, serif; font-style: italic; font-weight: 400;
+    font-size: 1.26em; letter-spacing: -.016em;
+    background: linear-gradient(transparent 60%, #CFE6FA 60%, #CFE6FA 94%, transparent 94%);
+    padding: 0 .08em;
+  }
+  .hero-sub {
+    margin: 30px 0 0; font-family: 'IBM Plex Mono', monospace; font-size: 11.5px;
+    letter-spacing: .1em; text-transform: uppercase; color: var(--ink-faint);
+  }
+  .hero-scroll {
+    position: absolute; left: 50%; transform: translateX(-50%); bottom: 26px;
+    display: flex; align-items: center; gap: 10px;
+    font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--ink-faint);
+  }
+  .hero-scroll i { display: block; width: 1px; height: 34px; background: var(--ink-faint);
+    transform-origin: top; animation: scrollLine 2.2s ease-in-out infinite; }
+  @keyframes scrollLine { 0% { transform: scaleY(0); } 50% { transform: scaleY(1); } 100% { transform: scaleY(0); transform-origin: bottom; } }
+
+  /* 다이어그램 중앙의 형광 원 — 'designer' 밑줄과 같은 색.
+     mix-blend-mode: multiply 라서 마우스 빛과 겹치면 색이 섞여 보입니다 */
+  .kw-glow {
+    position: absolute; left: 50%; top: 50%; width: 122%; aspect-ratio: 1 / 1;
+    transform: translate(-50%, -50%); border-radius: 50%;
+    z-index: 0; pointer-events: none; mix-blend-mode: multiply; filter: blur(18px);
+    background: radial-gradient(circle, rgba(226,245,176,.85) 0%, rgba(226,245,176,.42) 44%, rgba(226,245,176,0) 70%);
+  }
+
+  /* 다이어그램 */
+  .kw-diagram {
+    position: relative; width: min(100%, 347px); aspect-ratio: 347 / 328; margin: 0 auto;
+    color: var(--ink-soft); font-size: clamp(12px, 1.35vw, 15.5px); letter-spacing: -.01em;
+    user-select: none;
+  }
+  .kw-diagram svg { position: absolute; inset: -28px 0 28px; width: 100%; height: 100%; overflow: visible; pointer-events: none; z-index: 1; }
+  .kw-diagram line { stroke: var(--ink-soft); transition: stroke .25s ease; }
+  .kw-diagram line.on { stroke: var(--accent); }
+  .kw-label { position: absolute; left: 0; top: -28px; white-space: nowrap; will-change: transform; cursor: default; transition: color .25s ease; }
+  .kw-label.on { color: var(--accent); }
+  .kw-label.kw-center { color: var(--ink); font-weight: 600; font-size: 1.12em; letter-spacing: -.02em; }
+
+  /* 히어로 아래로 내려오면 프로필이 서서히 올라옵니다 */
+  aside.profile { opacity: 0; transform: translateY(22px); transition: opacity .7s ease, transform .7s cubic-bezier(.2,.8,.2,1); }
+  .wrap.in aside.profile { opacity: 1; transform: none; }
+
+  @media (max-width: 860px) {
+    .hero { grid-template-columns: 1fr; gap: 28px; padding: calc(var(--navh) + 8px) 20px 64px; align-content: center; }
+    .hero-text p.hero-lead { max-width: none; }
+    .kw-diagram { width: min(100%, 420px); font-size: 12px; }
+    
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-scroll i { animation: none; transform: none; }
+    aside.profile { opacity: 1; transform: none; transition: none; }
+  }
 </style>
 </head>
 
@@ -257,14 +392,33 @@
 
 <div id="glow"></div>
 
+<!-- ★ HERO — 첫 화면. 문장 속 키워드(data-kw)와 오른쪽 라벨(data-kw)은 같은 값으로 짝지어 둡니다 -->
+<section class="hero" id="home" aria-label="Introduction">
+  <div class="hero-text">
+    <p class="hero-lead">I'm a <span class="hl">designer</span> who never stops asking why. I lived by 🎨 craft, working as an
+      <span class="kw kw-obj" data-kw="objects">objects</span> and
+      <span class="kw kw-space" data-kw="spaces">spaces</span> designer. Wanting real answers to that why, I turned to
+      <span class="kw kw-data" data-kw="data">data analysis</span>. Now I design 📊
+      <span class="kw kw-res" data-kw="research" style="font-family: 'Times New Roman', Times, serif">research</span> on
+      <span class="kw kw-ui" data-kw="interfaces">interfaces</span> and
+      <span class="kw kw-hai" data-kw="hai">human–AI interaction</span>.</p>
+    <p class="hero-sub">Jisun Hwang · PhD applicant in HCI</p>
+  </div>
+  <div class="kw-diagram" id="kw" aria-hidden="true"><div class="kw-glow"></div></div>
+  <a class="hero-scroll" href="#about" aria-label="Scroll to About me"><i></i>Scroll</a>
+</section>
+
+
 <!-- 상단 메뉴 (메뉴 이름을 바꾸면 아래 섹션 id 도 같이 바꾸세요) -->
 <header class="topbar">
   <nav>
+    <a class="brand" href="#home" aria-label="Home">✻</a>
     <a href="#about"     data-nav="about">About Me</a>
     <a href="#news"      data-nav="news">News</a>
     <a href="#research"  data-nav="research">Research</a>
     <a href="#projects"  data-nav="projects">Projects</a>
     <a href="#work"      data-nav="work">Work</a>
+    <a href="portfolio.html" class="nav-ext">Portfolio<span aria-hidden="true">↗</span></a>
   </nav>
 </header>
 
@@ -646,7 +800,7 @@ const SITE_DATA = {
   const spy = () => {
     const line = Math.max(150, innerHeight * 0.32);
     const max = document.documentElement.scrollHeight - innerHeight;
-    let cur = sections[0];
+    let cur = null; /* 히어로에서는 메뉴 강조 없음 */
     sections.forEach(s => { if (s.getBoundingClientRect().top <= line) cur = s; });
     if (window.scrollY >= max - 8) cur = sections[sections.length - 1];
     links.forEach(l => {
@@ -686,5 +840,136 @@ const SITE_DATA = {
   });
 })();
 </script>
+<script>
+/* ==============================================================================
+   ★ HERO DIAGRAM — 오른쪽에서 천천히 도는 키워드 다이어그램
+   ------------------------------------------------------------------------------
+   · CENTER 는 가운데 단어, NODES 는 주변 키워드입니다.
+   · y : 세로 위치 (위가 음수), r : 회전 반경, a : 시작 각도(도). 값은 한 변 길이 대비 비율.
+   · id 는 위 문장의 data-kw 와 같아야 서로 강조됩니다.
+   · PERIOD_S 를 키우면 더 느리게 돕니다.
+   ============================================================================ */
+(function () {
+  const CENTER = 'Designer';
+  const NODES = [
+    { id: 'objects',    text: 'Objects',              y: -0.30, r: 0.10, a: 60  },
+    { id: 'spaces',     text: 'Spaces',               y: -0.15, r: 0.32, a: 175 },
+    { id: 'interfaces', text: 'Interfaces',           y: -0.15, r: 0.32, a: 70  },
+    { id: 'data',       text: 'Data Analysis',        y:  0.15, r: 0.32, a: 205 },
+    { id: 'research',   text: 'Research',             y:  0.15, r: 0.32, a: 20  },
+    { id: 'hai',        text: 'Human–AI Interaction', y:  0.30, r: 0.11, a: 235 }
+  ];
+  const PERIOD_S = 34;
+  const SEG = [0.33, 0.67];
+
+  const root = document.getElementById('kw');
+  if (!root) return;
+  const NS = 'http://www.w3.org/2000/svg';
+  const svg = document.createElementNS(NS, 'svg');
+
+  const center = document.createElement('div');
+  center.className = 'kw-label kw-center';
+  center.textContent = CENTER;
+  root.appendChild(center);
+
+  const items = NODES.map(n => {
+    const el = document.createElement('div');
+    el.className = 'kw-label'; el.dataset.kw = n.id; el.textContent = n.text;
+    root.appendChild(el);
+    const line = document.createElementNS(NS, 'line');
+    svg.appendChild(line);
+    return Object.assign({}, n, { el, line, a0: n.a * Math.PI / 180 });
+  });
+  root.appendChild(svg);
+
+  let S = 0;
+  function layout() {
+    S = root.clientWidth;
+    svg.querySelectorAll('line').forEach(l => l.setAttribute('stroke-width', Math.max(1, S * 0.0021)));
+    center.style.transform = `translate(${S / 2}px, ${S / 2}px) translate(-50%, -50%)`;
+  }
+  /* 세로축 회전 + 직교 투영 — 앞뒤로 도는 선분이 짧아지며 공간감이 생깁니다 */
+  function frame(t) {
+    const theta = (t / 1000) * (2 * Math.PI / PERIOD_S);
+    const cx = S / 2, cy = S / 2;
+    for (const it of items) {
+      const x = Math.cos(it.a0 + theta) * it.r * S, y = it.y * S;
+      it.el.style.transform = `translate(${cx + x}px, ${cy + y}px) translate(-50%, -50%)`;
+      it.line.setAttribute('x1', cx + x * SEG[0]); it.line.setAttribute('y1', cy + y * SEG[0]);
+      it.line.setAttribute('x2', cx + x * SEG[1]); it.line.setAttribute('y2', cy + y * SEG[1]);
+    }
+  }
+  const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let t0 = null;
+  (function loop(now) {
+    if (t0 === null) t0 = now;
+    frame(now - t0);
+    if (!still) requestAnimationFrame(loop);
+  })(performance.now());
+  new ResizeObserver(() => { layout(); frame(0); }).observe(root);
+  (document.fonts ? document.fonts.ready : Promise.resolve()).then(() => { layout(); frame(0); });
+
+  /* 문장 속 키워드 ↔ 다이어그램 라벨 서로 강조 */
+  const words = document.querySelectorAll('.hero-text .kw');
+  const set = (id, on) => {
+    document.querySelectorAll(`[data-kw="${id}"]`).forEach(e => e.classList.toggle('on', on));
+    const it = items.find(i => i.id === id); if (it) it.line.classList.toggle('on', on);
+  };
+  [...words, ...items.map(i => i.el)].forEach(el => {
+    el.addEventListener('mouseenter', () => set(el.dataset.kw, true));
+    el.addEventListener('mouseleave', () => set(el.dataset.kw, false));
+  });
+
+  /* 히어로를 지나 본문에 들어오면 프로필 표시 */
+  const wrap = document.querySelector('.wrap');
+  if (wrap) {
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver(es => { if (es.some(e => e.isIntersecting)) { wrap.classList.add('in'); io.disconnect(); } },
+        { rootMargin: '0px 0px -25% 0px' });
+      io.observe(wrap);
+    } else wrap.classList.add('in');
+  }
+
+  /* 히어로에서 한 번만 내려도 본문(About)까지 바로 부드럽게 넘어갑니다 */
+  const hero = document.getElementById('home');
+  if (hero && wrap) {
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let busy = false, touchY = null;
+    const target = () => Math.round(wrap.getBoundingClientRect().top + scrollY - 20);
+    const jump = y => window.scrollTo({ top: y, behavior: 'instant' }); /* CSS smooth-scroll 과 충돌하지 않게 */
+    const glide = () => {
+      if (busy) return; busy = true;
+      wrap.classList.add('in');
+      const from = scrollY, to = target(), d = to - from;
+      if (reduce || d <= 0) { jump(to); busy = false; return; }
+      const T = 820, t0 = performance.now();
+      const ease = u => 1 - Math.pow(1 - u, 4);
+      (function step(now) {
+        const u = Math.min(1, (now - t0) / T);
+        jump(from + d * ease(u));
+        if (u < 1) requestAnimationFrame(step);
+        else setTimeout(() => { busy = false; }, 450); /* 트랙패드 관성 스크롤 흡수 */
+      })(t0);
+    };
+    const inHero = () => scrollY < target() - 4;
+    addEventListener('wheel', e => {
+      if (!inHero() && !busy) return;
+      if (busy) { e.preventDefault(); return; }
+      if (e.deltaY > 0) { e.preventDefault(); glide(); }
+    }, { passive: false });
+    addEventListener('touchstart', e => { touchY = e.touches[0].clientY; }, { passive: true });
+    addEventListener('touchmove', e => {
+      if (!inHero() && !busy) return;
+      if (busy) { e.preventDefault(); return; }
+      if (touchY !== null && touchY - e.touches[0].clientY > 8) { e.preventDefault(); touchY = null; glide(); }
+    }, { passive: false });
+    addEventListener('keydown', e => {
+      if (inHero() && (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ')) { e.preventDefault(); glide(); }
+    });
+    hero.querySelector('.hero-scroll').addEventListener('click', e => { e.preventDefault(); glide(); });
+  }
+})();
+</script>
+
 </body>
 </html>

@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Portfolio of Jisun Hwang — research systems, interface design, 3D and spatial work, and craft.">
+<title>Jisun Hwang | Portfolio</title>
+<link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="./assets/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="./assets/apple-touch-icon.png">
+
+<!--
+================================================================================
+  JISUN HWANG — PORTFOLIO  /  편집 가이드
+================================================================================
+
+  ▷ 폴더 구조
+      webpage/
+        index.html
+        portfolio.html              ← 이 파일
+        assets/portfolio/           ← 포트폴리오 사진 폴더
+
+  ▷ index.html 상단 메뉴에 아래 한 줄을 추가하면 연결됩니다.
+      <a href="portfolio.html">Portfolio</a>
+
+  ▷ 수정은 파일 아래 두 곳만 보면 됩니다.
+      ★ TOPICS          — 위쪽 토픽 버튼의 순서
+      ★ PORTFOLIO_DATA  — 프로젝트 내용
+
+  ▷ 토픽 규칙 (중요)
+      · 카드에 보이는 토픽 = 그 프로젝트의 topics: [ ... ] 그대로입니다.
+      · 위쪽 필터 버튼 = 프로젝트들에 실제로 쓰인 토픽만 자동으로 만들어집니다.
+        그래서 카드와 필터가 항상 똑같은 이름으로 맞춰집니다.
+      · TOPICS 는 "버튼 순서"만 정합니다. 여기에 없는 새 토픽을 프로젝트에 적으면
+        자동으로 맨 뒤에 추가되고, 어느 프로젝트에도 안 쓰인 토픽은 버튼이 생기지 않습니다.
+      · 철자와 대소문자가 같아야 같은 토픽으로 인식됩니다 ('AI' ≠ 'Ai').
+
+  ▷ 보기 방식 (Cards / List)
+      · 필터 아래 오른쪽의 Cards / List 로 바꿉니다. 마지막으로 고른 방식은 브라우저에 기억됩니다.
+      · List 는 사진 없이 글만 보여줍니다. 제목을 누르면 그 자리에서 펼쳐집니다 (index.html 의 Projects 와 같은 방식).
+      · 사진이 있는 프로젝트는 펼친 내용 아래 'See with images' 를 누르면 원래 팝업이 열립니다.
+      · List 에서 쓰는 내용도 PORTFOLIO_DATA 그대로입니다 — 따로 적을 필요 없습니다.
+
+  ▷ 사진
+      · cover  : 카드 썸네일 1장. 칸에 꽉 차게 확대되어 모든 카드가 같은 크기로 보입니다.
+                 평소엔 흑백, 마우스를 올리면 컬러.  '' 로 두면 제목만 있는 카드가 됩니다.
+      · images : 팝업 안에서 위에서부터 보이는 사진들 (원본 비율 그대로, 잘리지 않음)
+================================================================================
+-->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+
+<style>
+  /* index.html 과 동일한 디자인 변수 */
+  :root {
+    --bg:        #FAF9F7;
+    --ink:       #14130F;
+    --ink-soft:  #3A372F;
+    --ink-mute:  #5F5B52;
+    --ink-faint: #8A8578;
+    --line:      #EAE7E1;
+    --line-soft: #EEEBE5;
+    --accent:    #1D6FC0;
+    --chip-line: #DEDAD2;
+    --card:      rgba(250,249,247,.42);   /* 카드 판면 — 토픽 칩과 같은 반투명 판면 */
+    --maxw:      1180px;
+    --navh:      82px;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: 'Archivo', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--ink); text-decoration: none; }
+  a:hover { color: var(--accent); }
+  p { text-wrap: pretty; }
+  button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+
+  /* 상단바 — index.html 과 같음 */
+  header.topbar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 40;
+    background: rgba(250,249,247,.42); backdrop-filter: blur(9px);
+    border-bottom: 1px solid var(--line);
+  }
+  header.topbar nav {
+    max-width: var(--maxw); margin: 0 auto; padding: 13px 32px;
+    display: flex; justify-content: flex-end; gap: 34px; flex-wrap: wrap;
+    font-size: 15.5px; font-weight: 400;
+  }
+  header.topbar nav a { padding: 4px 13px; border-radius: 999px; transition: color .3s ease; }
+  /* 왼쪽 상단 홈 마크 ✻ — 누르면 메인으로 */
+  header.topbar nav a.brand { margin-right: auto; padding: 0 2px; font-size: 32px; font-weight: 700; line-height: 1; color: var(--ink); transition: transform .5s ease, color .3s ease; }
+  header.topbar nav a.brand:hover { color: var(--accent); transform: rotate(90deg); }
+  /* 다른 페이지로 가는 링크(About Me) — index.html 의 Portfolio 버튼과 같은 모양 */
+  header.topbar nav a.nav-ext {
+    display: inline-flex; align-items: center; gap: 5px;
+    border: 1px solid color-mix(in srgb, var(--ink) 22%, transparent);
+    transition: color .3s ease, border-color .3s ease;
+  }
+  header.topbar nav a.nav-ext span { font-size: .85em; }
+  header.topbar nav a.nav-ext:hover { color: var(--accent); border-color: var(--accent); }
+
+  #glow { position: fixed; top: 0; left: 0; width: 400px; height: 400px; margin: -200px 0 0 -200px;
+          border-radius: 50%; filter: blur(18px); pointer-events: none; z-index: 0; opacity: 0;
+          transition: opacity .5s ease; }
+
+  .wrap { position: relative; z-index: 1; max-width: var(--maxw); margin: 0 auto;
+          padding: calc(var(--navh) + 56px) 32px 160px; }
+
+  /* ── 머리글 ────────────────────────────────────────────────────────── */
+  .head {
+    display: grid; grid-template-columns: minmax(0, 1fr) minmax(300px, 44%);
+    gap: 40px; align-items: end; margin-bottom: 44px;
+  }
+  .head h1 {
+    margin: 0; font-weight: 300; font-size: clamp(48px, 7vw, 92px); line-height: .96;
+    letter-spacing: -.035em;
+  }
+  .head h1 em {
+    font-family: 'Instrument Serif', Georgia, serif; font-style: italic; font-weight: 400;
+    letter-spacing: -.02em;
+  }
+  .head .sub { margin: 22px 0 0; max-width: 46ch; font-size: 15.5px; line-height: 1.55; color: var(--ink-soft); }
+
+  /* 토픽 필터 — 박스 없이 */
+  .filter .ft { display: flex; align-items: baseline; gap: 12px; margin-bottom: 12px; }
+  .filter .ft h2 { margin: 0; font-weight: 400; font-size: 20px; letter-spacing: -.02em; }
+  .filter .ft .count { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink-faint); letter-spacing: .04em; }
+  .filter .ft .clear { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: .04em; color: var(--ink-faint); }
+  .filter .ft .clear:hover { color: var(--accent); }
+  .filter .ft .clear[hidden] { display: none; }
+
+  /* ── 토픽 칩 — index.html 의 키워드 칩과 같은 모양·애니메이션 ───────── */
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip {
+    display: inline-block; will-change: transform;
+    font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; letter-spacing: .05em;
+    padding: 5px 10px; border: 1px solid var(--chip-line); border-radius: 999px;
+    background: rgba(250,249,247,.42); backdrop-filter: blur(9px);
+    color: var(--ink);
+    transition: border-color .2s, color .2s;
+  }
+  .filter .chip { animation: kwFloat 5.4s ease-in-out infinite; }
+  @keyframes kwFloat {
+    0%,100% { transform: translateY(0) rotate(0deg); }
+    33%     { transform: translateY(-4px) rotate(-.6deg); }
+    66%     { transform: translateY(3px) rotate(.5deg); }
+  }
+  .filter .chip:hover { border-color: var(--ink-mute); }
+  .chip[aria-pressed="true"], .chip.on { border-color: var(--accent); color: var(--accent); }
+  /* 카드·팝업 안의 칩: 같은 모양, 조금 작게, 떠다니지 않음 */
+  .chips.sm { gap: 4px; }
+  .chips.sm .chip { font-size: 10.5px; padding: 3px 8px; }
+
+  /* ── 카드 그리드 ───────────────────────────────────────────────────── */
+  .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; }
+  .card {
+    display: flex; flex-direction: column; text-align: left;
+    background: var(--card); backdrop-filter: blur(9px); border: 1px solid var(--chip-line); border-radius: 12px;
+    padding: 14px 16px 18px; aspect-ratio: 3 / 4; min-height: 0; overflow: hidden;
+    transition: opacity .32s ease, transform .32s ease, background .3s ease, border-color .2s;
+  }
+  .card:hover { background: rgba(255,255,255,.55); border-color: var(--ink-mute); }
+  .card.out { opacity: 0; transform: scale(.985); pointer-events: none; }   /* 필터 제외 — 자리는 남김 */
+  .card .top { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; margin-bottom: 12px; }
+  .card .date { flex: 0 0 auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink-faint); padding-top: 3px; }
+
+  /* 사진 카드: 액자형 — 카드 가운데에 같은 크기의 세로 액자, 아래에 제목.
+     사진 비율과 상관없이 액자 안을 꽉 채워서 모든 카드가 똑같이 보입니다.
+     평소 흑백, 호버 시 컬러 */
+  .card.has-img .fig {
+    flex: 1 1 auto; min-height: 0; display: flex; align-items: center; justify-content: center;
+    padding: 6px 0 8px;
+  }
+  .card.has-img .frame {
+    width: 100%; max-height: 100%; aspect-ratio: 4 / 5; max-width: 86%;
+    overflow: hidden; background: #E6E3DC;
+  }
+  .card.has-img .frame :is(img, video) {
+    width: 100%; height: 100%; object-fit: cover; object-position: center; display: block;
+    filter: grayscale(1) contrast(1.02);
+    transition: filter .45s ease, transform .6s cubic-bezier(.2,.8,.2,1);
+  }
+  .card.has-img:hover .frame :is(img, video), .card.has-img:focus-visible .frame :is(img, video) { filter: none; transform: scale(1.04); }
+  .card.has-img .title {
+    width: 86%; margin: 12px auto 0; text-align: left;
+    font-size: 15px; line-height: 1.4; font-weight: 400; letter-spacing: -.01em;
+  }
+
+  /* 사진 없는 카드: 제목만 왼쪽 정렬 */
+  .card.no-img .fig { flex: 1 1 auto; display: flex; align-items: center; }
+  .card.no-img .title { margin: 0; font-size: 18px; line-height: 1.36; font-weight: 400; letter-spacing: -.014em; }
+  .card.no-img .title::after { content: ' ↗'; color: var(--ink-faint); }
+  .card .foot { font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; color: var(--ink-faint); letter-spacing: .03em; margin-top: 12px; }
+
+  /* ── 보기 전환 (Cards / List) ────────────────────────────────────── */
+  .viewbar { display: flex; justify-content: flex-end; align-items: baseline; gap: 8px; margin: 0 0 14px;
+             font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; letter-spacing: .04em; color: var(--ink-faint); }
+  .viewbar button { padding: 2px 0; color: var(--ink-faint); border-bottom: 1px solid transparent; transition: color .2s, border-color .2s; }
+  .viewbar button:hover { color: var(--accent); }
+  .viewbar button[aria-pressed="true"] { color: var(--ink); border-bottom-color: var(--ink); }
+  .view-in { animation: expand .3s cubic-bezier(.2,.8,.2,1) both; }
+  [hidden] { display: none !important; }
+
+  /* ── 리스트 — index.html 의 Projects 목록과 같은 모양·애니메이션, 사진 없음 ── */
+  @keyframes expand { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+  .list { border-bottom: 1px solid var(--line-soft); }
+  .lrow { border-top: 1px solid var(--line-soft); transition: padding-left .25s ease, background .25s ease; }
+  .lrow:hover { padding-left: 10px;
+    background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,.26) 12%,
+                rgba(255,255,255,.42) 28%, rgba(255,255,255,.2) 62%, rgba(255,255,255,0) 92%); }
+  .lrow.in { animation: expand .28s cubic-bezier(.2,.8,.2,1) both; }      /* 필터로 다시 나타날 때 */
+  .lrow .lhead { width: 100%; text-align: left; display: grid; gap: 14px; align-items: start; padding: 11px 0;
+                 grid-template-columns: minmax(0,128px) minmax(0,1fr) auto auto; }
+  .lrow .when  { font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; color: var(--ink-faint); padding-top: 3px; }
+  .lrow .ltitle { margin: 0 0 3px; font-size: 16px; line-height: 1.35; font-weight: 600; letter-spacing: -.012em; }
+  .lrow .lmeta  { margin: 0; font-size: 13.5px; line-height: 1.45; color: var(--ink-mute); }
+  .lrow .chips  { justify-content: flex-end; padding-top: 1px; max-width: 220px; }
+  .lrow .sign   { font-family: 'IBM Plex Mono', monospace; font-size: 15px; color: var(--accent); line-height: 1.3; padding-top: 1px; width: 12px; text-align: center; }
+  .lrow .lbody  { padding: 0 0 18px calc(128px + 14px); animation: expand .28s cubic-bezier(.2,.8,.2,1) both; }
+  .lrow .lbody .p-lead { margin: 0 0 10px; font-size: 15.5px; line-height: 1.5; color: var(--ink); max-width: 66ch; }
+  .lrow .lbody .p-body { margin: 0 0 8px; font-size: 14.5px; line-height: 1.55; color: var(--ink-soft); max-width: 70ch; }
+  .lrow .lbody .p-head { margin: 14px 0 6px; font-size: 14.5px; font-weight: 600; }
+  .lrow .lbody .p-out  { margin: 10px 0 0; font-size: 14.5px; line-height: 1.5; color: var(--accent); max-width: 70ch; }
+  .lrow .lbody .p-more { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 6px 18px;
+                         font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; letter-spacing: .03em; }
+  .lrow .lbody .p-more a, .lrow .lbody .p-more button { color: var(--accent); }
+  .lrow .lbody .p-more a:hover, .lrow .lbody .p-more button:hover { text-decoration: underline; }
+
+  .empty { padding: 60px 0; font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--ink-faint); }
+
+  footer.foot { border-top: 1px solid var(--line); padding-top: 18px; margin-top: 64px; }
+  footer.foot p { margin: 0; font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink-faint); }
+
+  /* ── 전체 화면 팝업 ────────────────────────────────────────────────── */
+  .modal { position: fixed; inset: 0; z-index: 60; display: none; }
+  .modal.open { display: block; }
+  .modal .scrim { position: absolute; inset: 0; background: var(--bg); }
+  .modal .panel {
+    position: relative; height: 100%; overflow-y: auto;
+    max-width: var(--maxw); margin: 0 auto; padding: 0 32px 120px;
+    animation: rise .34s cubic-bezier(.2,.8,.2,1) both;
+  }
+  @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+  .modal .bar {
+    position: sticky; top: 0; z-index: 2; display: flex; justify-content: space-between; align-items: center;
+    padding: 38px 0 14px; background: linear-gradient(rgba(250,249,247,1) 70%, rgba(250,249,247,0));
+    font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; letter-spacing: .04em; color: var(--ink-faint);
+  }
+  .modal .bar .nav { display: flex; gap: 18px; }
+  .modal .bar button:hover { color: var(--accent); }
+  .modal .body { display: grid; grid-template-columns: minmax(240px, 30%) minmax(0, 1fr); gap: 48px; padding-top: 28px; }
+  .modal .meta { position: sticky; top: 84px; align-self: start; }
+  .modal .meta h2 { margin: 0 0 18px; font-weight: 400; font-size: clamp(26px, 3vw, 36px); line-height: 1.12; letter-spacing: -.028em; }
+  .modal .meta dl { margin: 0; display: grid; grid-template-columns: 74px minmax(0,1fr); row-gap: 10px; column-gap: 12px;
+                    font-size: 13.5px; line-height: 1.5; border-top: 1px solid var(--line); padding-top: 16px; }
+  .modal .meta dt { font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-faint); padding-top: 3px; }
+  .modal .meta dd { margin: 0; color: var(--ink-soft); }
+  .modal .meta .chips { margin-top: 18px; }
+  .modal .meta .links { margin-top: 20px; display: flex; flex-direction: column; gap: 6px; }
+  .modal .meta .links a { color: var(--accent); font-size: 13.5px; }
+  .modal .meta .links a:hover { text-decoration: underline; }
+  .modal .content { min-width: 0; }
+  .modal .content .lead { margin: 0 0 26px; font-size: 19px; line-height: 1.5; letter-spacing: -.012em; max-width: 58ch; }
+  .modal .content .para { margin: 0 0 16px; font-size: 15.5px; line-height: 1.62; color: var(--ink-soft); max-width: 66ch; }
+  .modal .content .outcome { margin: 22px 0 32px; padding-left: 14px; border-left: 2px solid var(--accent);
+                             font-size: 15px; line-height: 1.55; max-width: 60ch; }
+  .modal .content h3 { margin: 30px 0 10px; font-weight: 500; font-size: 17px; letter-spacing: -.012em; }
+  .modal .content .row { display: grid; grid-template-columns: repeat(auto-fit, minmax(0, 1fr)); gap: 14px; margin: 0 0 22px; }
+  .modal .content .row figure { margin: 0; }
+  .modal .content figure { margin: 0 0 22px; }
+  .modal .content figure :is(img, video) { display: block; width: 100%; height: auto; border-radius: 10px; border: 1px solid var(--line); background: #fff; }
+  .modal .content figure.pad :is(img, video) { padding: 18px; }
+  .modal .content figure .embed { display: block; width: 100%; aspect-ratio: 16 / 9; border: 0; border-radius: 10px; background: #000; }   /* 다이어그램처럼 배경 흰 그림은 안쪽 여백 */
+  .modal .content figcaption { margin-top: 8px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink-faint); letter-spacing: .03em; }
+  body.lock { overflow: hidden; }
+
+  /* 스크롤바 숨김 — 스크롤은 그대로 됩니다 */
+  html, .modal .panel { scrollbar-width: none; -ms-overflow-style: none; }
+  html::-webkit-scrollbar, .modal .panel::-webkit-scrollbar { display: none; }
+
+  /* ── 좁은 화면 ─────────────────────────────────────────────────────── */
+  @media (max-width: 960px) {
+    .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .head { grid-template-columns: 1fr; gap: 26px; }
+    .modal .body { grid-template-columns: 1fr; gap: 28px; }
+    .modal .meta { position: static; }
+    .lrow .lhead { grid-template-columns: minmax(0,1fr) auto; row-gap: 4px; }
+    .lrow .when  { grid-column: 1 / -1; padding-top: 0; }
+    .lrow .chips { grid-column: 1; grid-row: 3; justify-content: flex-start; max-width: none; }
+    .lrow .sign  { grid-column: 2; grid-row: 2; }
+    .lrow .lbody { padding-left: 0; }
+    .lrow .ltitle { font-size: 15.5px; }
+  }
+  @media (max-width: 860px) {
+    header.topbar nav { justify-content: center; gap: 18px; padding: 11px 18px; font-size: 14px; }
+    header.topbar nav a { padding: 4px 6px; }
+    header.topbar nav { justify-content: space-between; }
+    header.topbar nav a.brand { margin-right: 0; }
+    .wrap { padding: calc(var(--navh) + 20px) 20px 100px; }
+  }
+  @media (max-width: 560px) {
+    .grid { grid-template-columns: 1fr; gap: 14px; }
+    .card { aspect-ratio: 4 / 5; }
+    .head h1 { font-size: 44px; }
+    .modal .panel { padding: 0 18px 80px; }
+    .modal .bar { padding-top: 20px; }
+  }
+  /* 터치 기기에는 호버가 없으니 사진을 컬러로 */
+  @media (hover: none) {
+    .card.has-img .frame :is(img, video) { filter: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #glow { display: none; }
+    .filter .chip { animation: none; }
+    .card, .modal .panel, .card.has-img .frame :is(img, video) { transition: none; animation: none; }
+    .lrow, .lrow.in, .lrow .lbody, .view-in { transition: none; animation: none; }
+  }
+</style>
+</head>
+
+<body>
+
+<div id="glow"></div>
+
+<header class="topbar">
+  <nav>
+    <a class="brand" href="index.html" aria-label="Back to home">✻</a>
+    <a href="index.html" class="nav-ext"><span aria-hidden="true">←</span>About Me</a>
+  </nav>
+</header>
+
+<div class="wrap">
+
+  <div class="head">
+    <div>
+      <h1>Things I <em>made</em></h1>
+      <!-- ★ 소개 문장 -->
+      <p class="sub">Research systems, interfaces, 3D characters, retail spaces, and textile work — the objects behind the papers. Pick a topic, or click a card to read more.</p>
+    </div>
+    <div class="filter" aria-label="Filter by topic">
+      <div class="ft">
+        <h2>Search by topic</h2>
+        <span class="count" id="count"></span>
+        <button class="clear" id="clear" hidden>Clear ✕</button>
+      </div>
+      <div class="chips" id="tags" role="group" aria-label="Topics"></div>
+    </div>
+  </div>
+
+  <div class="viewbar" role="group" aria-label="View">
+    <button type="button" data-view="cards" aria-pressed="true">Cards</button>
+    <span aria-hidden="true">/</span>
+    <button type="button" data-view="list" aria-pressed="false">List</button>
+  </div>
+
+  <div class="grid" id="grid"></div>
+  <div class="list" id="list" hidden></div>
+  <p class="empty" id="empty" hidden>No projects under this topic yet.</p>
+
+  <footer class="foot">
+    <p>Last Update: September 2026</p>
+  </footer>
+</div>
+
+<!-- 전체 화면 팝업 -->
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="m-title" aria-hidden="true">
+  <div class="scrim" data-close></div>
+  <div class="panel">
+    <div class="bar">
+      <span id="m-index"></span>
+      <div class="nav">
+        <button id="m-prev" aria-label="Previous project">← Prev</button>
+        <button id="m-next" aria-label="Next project">Next →</button>
+        <button class="close" data-close aria-label="Close">Close ✕</button>
+      </div>
+    </div>
+    <div class="body">
+      <div class="meta">
+        <h2 id="m-title"></h2>
+        <dl id="m-dl"></dl>
+        <div class="chips sm" id="m-tags"></div>
+        <div class="links" id="m-links"></div>
+      </div>
+      <div class="content" id="m-content"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ==============================================================================
+   ★ TOPICS — 필터 버튼 "순서"만 정합니다
+   ------------------------------------------------------------------------------
+   · 버튼은 아래 프로젝트들의 topics 에서 자동으로 만들어집니다.
+   · 여기 적힌 순서대로 먼저 놓이고, 여기 없는 토픽은 자동으로 뒤에 붙습니다.
+   · 어느 프로젝트에도 안 쓰인 토픽은 여기 적혀 있어도 버튼이 생기지 않습니다.
+   ============================================================================ */
+const TOPICS = ['Research', 'AI', 'UI', 'UX', '3D', 'Spatial', 'Craft'];
+
+/* ==============================================================================
+   ★ PORTFOLIO_DATA — 프로젝트 내용
+   ------------------------------------------------------------------------------
+   title    : 카드와 팝업 제목
+              카드에서 원하는 곳에서 줄을 바꾸려면 그 자리에 \n 을 넣으세요.
+              예) title: 'Vibe Design:\na human-in-the-loop UI design agent'
+              \n 이 없으면 칸 폭에 맞춰 자연스럽게 줄바꿈되고,
+              팝업·리스트에서는 \n 이 있어도 한 줄로(띄어쓰기로) 보입니다.
+   date     : 카드 오른쪽 위
+   topics   : ['Research', 'AI']  ← 카드 왼쪽 위에 이 칩들이 그대로 보이고, 필터에도 쓰입니다
+   cover    : 카드 썸네일 (액자에 꽉 차게, 흑백 → 호버 시 컬러).  '' 이면 제목만 있는 카드
+   footnote : (선택) 사진 없는 카드 아래 작은 글씨
+   role, org, year : 팝업 왼쪽 정보
+   links    : [ { label: '이름', url: '주소' } ]
+
+   content  : 팝업 오른쪽 본문. 아래 블록들을 원하는 순서로 자유롭게 섞어 넣으세요.
+       { lead: '첫 문장' }                                  ← 조금 큰 글씨
+       { text: '본문 문단' }                                ← 일반 문단
+       { heading: '작은 제목' }                             ← 소제목
+       { outcome: '결과 한 줄' }                            ← 파란 선 강조
+       { image: '경로', caption: '설명' }                   ← 사진 1장 (원본 비율, 잘리지 않음)
+       { image: '경로', caption: '설명', pad: true }        ← 흰 배경 그림(다이어그램)은 pad: true 로 여백
+       { images: ['경로1', '경로2'], caption: '설명' }      ← 사진 2~3장을 한 줄에 나란히
+       { image: '영상.mp4', caption: '설명' }               ← 영상도 사진처럼: 소리 없이 자동 반복 (GIF처럼). cover 에도 됨
+       { video: '영상.mp4', caption: '설명' }               ← 재생 버튼·소리 있는 플레이어
+       { video: 'https://youtu.be/...', caption: '설명' }   ← 유튜브·비메오 주소는 그대로 붙여 넣기
+         영상은 H.264 mp4 로, 10MB 안쪽 권장 (GitHub 은 100MB 넘는 파일은 못 올림)
+
+   · 새 프로젝트는 { ... } 하나를 통째로 복사해 붙이고 내용만 바꾸세요. 사이에 쉼표(,)
+   · 글 안에 ' 를 쓰려면 \' 로 적으세요
+   ============================================================================ */
+const PORTFOLIO_DATA = [
+  {
+    title: 'Vibe Design: \nHuman-in-the-loop AI Agents for UI Design with Large Language Models',
+    date: '2026',
+    topics: ['Research', 'AI', 'UI','UX'],
+    cover: './assets/portfolio/vibe-design.jpg',
+    footnote: 'HICSS 59 · Outstanding Thesis Award',
+    role: 'First author', org: 'Ajou University Business School', year: 'Apr 2025 – Jan 2026',
+    content: [
+      { lead: 'A framework where LLM agents prototype interfaces and simulated users test them, with a designer checking in at every step.' },
+      { text: 'Vibe Design brings the idea of vibe coding to UI design. The designer keeps ownership of the intent, while AI supports the two stages of design thinking that rely on fast iteration: prototyping and testing.' },
+      { image: './assets/portfolio/vibe-design-fig1-definition.svg', caption: 'The designer leads the first three stages; AI supports the last two.' },
+      { text: 'The framework works on screenshots rather than code. An LLM builds screens in Figma through MCP, AI agents run a simulated usability test, and the designer decides what to revise. A Researcher Agent interviews virtual users screen by screen, then organizes their feedback into requirements according to seven usability goals.' },
+      { image: './assets/portfolio/vibe-design-fig2-framework.svg', caption: 'The Vibe Design loop, with designer checkpoints (human-in-the-loop).' },
+      { image: './assets/portfolio/vibe-design-fig4-prototype.png', caption: 'A 14-screen banking prototype built with the framework.' },
+      { text: 'A pilot study showed that more input is not always better. Agents over-relied on attention heatmaps, which introduced bias and led them to contradict real users. Long transcripts caused the "lost in the middle" problem, where agents missed issues buried mid-text, until I added a short expert-reflection summary at the top.' },      { image: './assets/portfolio/vibe-design-heatmap.png', caption: 'Attention heatmaps used in the pilot and later removed.' },
+      { text: 'In the main study, I built simulated users for five real participants from their demographics, personas, or usability-test transcripts. Of the 37 issues the real participants raised, the three types of agents also raised 46%, 57%, and 76%.' },
+      { image: './assets/portfolio/vibe-design-fig5-coverage.svg', caption: 'Share of real usability issues each type of simulated user also raised.' },
+      { text: 'The 76% is an upper bound, since those agents read the same sessions I scored against. Agents also missed big-picture redesign ideas and complaints about service policies, so simulation complemented, rather than replaced, real users.' },
+      { outcome: 'Published at HICSS 59; received the Outstanding Thesis Award (Dean\'s Award) from Ajou Graduate School.' },
+    ],
+    links: [ { label: 'Paper (HICSS 59)', url: 'https://doi.org/10.24251/HICSS.2026.530' } ]
+  },
+  {
+    title: 'Custom eye-tracking apparatus',
+    date: 'In progress',
+    topics: ['Research','Craft'],
+    cover: '',
+    footnote: 'NRF-funded intelligent packaging study',
+    role: 'Co-builder', org: 'Ajou University Business School', year: 'In progress',
+    content: [
+      { lead: 'A low-cost, head-mounted eye tracker for a study on how consumers read intelligent packaging cues.' },
+      { text: 'We are building the hardware as a team and running it on Pupil Core, an open-source eye-tracking platform from Pupil Labs. It will be used alongside EEG to measure where people look and how they respond to packaging signals in a three-year, NRF-funded project.' }
+    ],
+    links: [ { label: 'Pupil Core (open source)', url: 'https://github.com/pupil-labs/pupil' } ]
+  },
+  {
+    title: 'LG Electronics \ninternal AI chatbot redesign',
+    date: '2026',
+    topics: ['AI', 'UI', 'UX'],
+    cover: '',
+    footnote: 'WithData · LG Electronics',
+    role: 'UI/UX Designer', org: 'WithData Inc.', year: 'Dec 2025 – Feb 2026',
+    content: [
+      { lead: 'A redesign of an internal AI chatbot that helps LG Electronics employees search company knowledge and check where each answer comes from.' },
+      { text: 'The original chatbot showed answers, but checking their sources was hard. Documents opened in a narrow pop-up, so users kept opening, closing, and going back, which broke their judgment of whether an answer was trustworthy. The layout also made it unclear what to look at first, and it felt more like a legacy work tool than an AI chatbot.' },
+      { image: './assets/portfolio/as-is.png', caption: 'Before: source documents opened in a narrow pop-up over the chat.' },
+      { text: 'I rebuilt the structure around familiar chat patterns so users could start without learning a new interface. A source tab gathers the documents behind each answer, with browser-style tabs for comparing several files quickly. I also added features for knowledge work: file upload, multi-turn conversation, visible reasoning steps, and chat history.' },
+      { image: './assets/portfolio/to-be.png', caption: 'After: a familiar chat layout with visible reasoning steps and a dedicated source tab.' },
+      { text: 'Drawing on HCI research on interactive debugging of multi-agent AI systems (Epperson et al., CHI 2025), I also proposed a show–intervene–verify loop. Timestamps on each reasoning step would let users return to the point where an answer went wrong and rerun from there. It was not built for technical reasons, but the client kept it under discussion as a follow-up feature.' },
+      { image: './assets/portfolio/details.png', caption: '' },
+      { outcome: 'Delivered the full UI/UX design specification, which contributed to winning the LG Electronics contract.' }
+    ],
+    links: [ { label: 'Referenced paper (CHI 2025)', url: 'https://doi.org/10.1145/3706598.3713581' } ]
+  },
+  {
+    title: 'AI agent for trending-keyword video generation',
+    date: '2025',
+    topics: ['AI'],
+    cover: './assets/portfolio/node.png',
+    footnote: 'Intellicode · Internship program',
+    role: 'Research intern', org: 'Intellicode Inc.', year: 'Dec 2024 – Feb 2025',
+    content: [
+      { lead: 'The image-generation part of a team-built AI agent that turns trending keywords into short-form videos.' },
+      { text: 'Our team built an agent that collects trending keywords from news, online communities, and best-seller lists, then creates and uploads short videos. I was responsible for the image side: ComfyUI workflows that generate virtual models, composite products into new background scenes, and dress models in new clothing.' },
+      { text: 'Each workflow splits the job into modular node steps. Virtual try-on is one example: Grounding DINO and SAM find and mask the garment, DensePose maps the body, and IDM-VTON dresses the model. For product compositing, IC-Light relit product photos to match new backgrounds, and ControlNet and IP-Adapter guided the scene. InstantID kept a generated face consistent across poses.' },
+      { image: './assets/portfolio/comfy.png', caption: 'One of the workflows, virtual try-on: garment masking with Grounding DINO and SAM, body mapping with DensePose, and try-on with IDM-VTON.' },
+      { text: 'I then upgraded the workflow with newer models. FLUX replaced Stable Diffusion, producing sharper, higher-resolution portraits without negative prompts, and an LLM wrote the image prompts.' },
+      { image: './assets/portfolio/FLUX.png', caption: 'The same portrait prompt generated with SD1.5, SDXL, and FLUX.' },
+      { text: 'PuLID placed a generated face onto a new image while keeping its identity, and Leffa changed clothing while preserving garment details such as ties and gathers.' },
+      { image: './assets/portfolio/faceswap.png', caption: 'Face swap with PuLID: the input face is carried into a new image.' },
+      { image: './assets/portfolio/cloth.png', caption: 'Virtual try-on with Leffa: the input garment is fitted onto the model.' },
+      { text: 'The same approach extended to product compositing. For a car ad, IC-Light relit the car to match each new scene from a single background prompt. For a perfume product, ControlNet and IP-Adapter blended the bottle into a new styled background without IC-Light.' },
+      { image: './assets/portfolio/workflow.png', caption: 'Car compositing workflow: source preparation, first diffusion with IC-Light, then edge masking and a second diffusion to add detail.' },
+      { image: './assets/portfolio/car.png', caption: 'One car photo and background, relit for four prompts: rainy day, desert, winter snow, and sunset.' },
+      { image: './assets/portfolio/workflow2.png', caption: 'Perfume compositing workflow: source preparation, background generation with ControlNet and IP-Adapter, then product compositing.' },
+      { image: './assets/portfolio/perfume.png', caption: 'A perfume bottle composited into a new background using reference images for style.' },
+      { outcome: 'Built a working image compositing pipeline for the agent; presented the final project report.' }
+    ],
+    links: [ ]
+  },
+  {
+    title: 'Visual Merchandising, Thursday Island',
+    date: '2023',
+    topics: ['Spatial'],
+    cover: './assets/portfolio/TI.jpeg',
+    footnote: 'GNCO · Visual Merchandising Design',
+    role: 'Visual Merchandise Designer', org: 'GNCO Co., Ltd.', year: 'Jan 2023 – Sep 2023',
+    content: [
+    { lead: 'The brand\'s offline touchpoints — in-store displays, pop-up stores, weekly mannequin styling — planned, designed, and supervised on site.' },
+    { image: './assets/portfolio/TI-popup2.png', caption: 'Department store pop-up' },
+    { image: './assets/portfolio/TI-popup2.png', caption: 'Department store pop-up' },
+    { image: './assets/portfolio/TI-popup3.png', caption: 'Department store pop-up' },
+    { image: './assets/portfolio/toinq.png', caption: 'Store launch for toinq, the company\'s new brand' },
+    { image: './assets/portfolio/TI-model.png', caption: 'Campaign imagery edited into in-store visuals' },
+    { image: './assets/portfolio/TI-me.png', caption: 'Behind the scenes' }
+    ],
+  links: [
+    { label: 'Instagram · @thursdayisland_life', url: 'https://www.instagram.com/thursdayisland_life/' },
+    { label: 'Instagram · @thursday_island_parnas', url: 'https://www.instagram.com/thursday_island_parnas/' }
+    ]
+  },
+  {
+    title: 'AR face-tracking avatar NFT service',
+    date: '2022',
+    topics: ['3D','AR'],
+    cover: './assets/portfolio/blender.png',
+    footnote: 'RealBits · Blender',
+    role: '3D Designer', org: 'RealBits Inc.', year: 'Apr 2022 – Dec 2022',
+    content: [
+      { lead: '3D characters and accessories for an NFT service that let owners use their character as a face-tracking avatar in live streams and messaging apps.' },
+      { text: 'Working with a developer, I conceived and modeled the characters and a range of accessories in Blender for Gen Z and millennial users. Every item was built to fit the same base head, so owners could mix hairstyles, glasses, hats, and other pieces into their own look.' },
+      { image: './assets/portfolio/blender.png', caption: 'Part of the accessory set' },
+      { text: 'Each character also needed expressions that could follow the user\'s face. I set up shape keys for movements such as blinking and opening the mouth, so the avatar could mirror the user in real time.' },
+      { image: './assets/portfolio/blender.mp4', caption: 'Facial expression shape keys being tested in Blender.' },
+      { outcome: 'Launched the service with a full set of 3D characters and accessories.' }
+    ],
+    links: []
+  },
+  {
+    title: 'Undergraduate exhibition',
+    date: '2022',
+    topics: ['Craft', 'Spatial'],
+    cover: './assets/portfolio/design.png',
+    footnote: 'Konkuk University · Living Design',
+    role: 'Designer & maker', org: 'Konkuk University', year: 'Feb 2021 - Dec 2021',
+    content: [
+      /* ★ { lead: '...' }, { text: '...' }, { image: '...' } 순서대로 넣으세요 */
+      { lead: 'A Living Design graduation project: a series of artworks designed and made in textile, ceramic, and metal.' },
+      { text: 'TEXTILE' },
+      { image: './assets/portfolio/pattern.png', caption: 'Pattern design' },
+      { image: './assets/portfolio/map1.png', caption: '' },
+      { image: './assets/portfolio/map2.png', caption: '' },
+      { image: './assets/portfolio/map3.png', caption: '' },
+      { image: './assets/portfolio/fabric.png', caption: '' },
+      { image: './assets/portfolio/fabric2.png', caption: '' },
+      { image: './assets/portfolio/fabric3.png', caption: '' },
+      { text: 'CERAMIC' },
+      { image: './assets/portfolio/ceramic.png', caption: 'Ceramic artwork' },
+      { text: 'METAL' },
+      { image: './assets/portfolio/metal2.png', caption: '' },
+      { image: './assets/portfolio/metal.png', caption: 'Metal artwork' },
+      { outcome: 'Exhibited at Konkuk University Living Design graduation exhibition.' }],
+    links: []
+  }
+];
+
+/* ==============================================================================
+   아래는 화면을 그리는 코드입니다. 내용 수정만 할 경우 건드리지 않아도 됩니다.
+   ============================================================================ */
+(function () {
+  const esc = s => String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  const $ = id => document.getElementById(id);
+  const brk  = s => esc(s).replace(/\s*\n\s*/g, '<br>');          /* 카드 제목: \n → 줄바꿈 */
+  const flat = s => String(s == null ? '' : s).replace(/\s*\n\s*/g, ' ');  /* 그 밖: \n → 띄어쓰기 */
+
+  /* 영상 — 경로가 .mp4/.webm/.mov/.m4v 로 끝나면 사진 대신 영상으로 */
+  const isVideo = s => /\.(mp4|webm|mov|m4v)(\?|#|$)/i.test(String(s || ''));
+  const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const media = (src, alt) => isVideo(src)
+    ? `<video src="${esc(src)}" ${calm ? 'controls' : 'autoplay loop'} muted playsinline preload="metadata" aria-label="${esc(alt)}"></video>`
+    : `<img src="${esc(src)}" alt="${esc(alt)}" loading="lazy">`;
+  /* 유튜브·비메오 주소 → 플레이어 주소 */
+  const embedOf = u => {
+    let m = String(u || '').match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([\w-]{11})/);
+    if (m) return 'https://www.youtube-nocookie.com/embed/' + m[1];
+    m = String(u || '').match(/vimeo\.com\/(?:video\/)?(\d+)/);
+    if (m) return 'https://player.vimeo.com/video/' + m[1];
+    return '';
+  };
+  const topicsOf = p => (p.topics || []).map(t => String(t).trim()).filter(Boolean);
+  let current = null;
+  let openIdx = -1;
+
+  /* 필터 버튼 = 실제로 쓰인 토픽만, TOPICS 순서 우선 → 카드와 항상 일치 */
+  const used = [];
+  PORTFOLIO_DATA.forEach(p => topicsOf(p).forEach(t => { if (!used.includes(t)) used.push(t); }));
+  const topicList = TOPICS.filter(t => used.includes(t)).concat(used.filter(t => !TOPICS.includes(t)));
+
+  const chip = (t, on) => `<span class="chip${on ? ' on' : ''}" data-t="${esc(t)}">${esc(t)}</span>`;
+
+  $('tags').innerHTML = topicList.map(t =>
+    `<button type="button" class="chip" data-topic="${esc(t)}" aria-pressed="false">${esc(t)}</button>`).join('');
+  /* 떠다니는 타이밍을 서로 다르게 — index.html 과 같은 방식 */
+  document.querySelectorAll('#tags .chip').forEach((c, i) => {
+    c.style.animationDelay = (i * 0.47).toFixed(2) + 's';
+    c.style.animationDuration = (4.6 + (i % 4) * 0.7).toFixed(1) + 's';
+  });
+
+  /* 카드 */
+  $('grid').innerHTML = PORTFOLIO_DATA.map((p, i) => {
+    const has = !!p.cover;
+    return `
+      <button type="button" class="card ${has ? 'has-img' : 'no-img'}" data-i="${i}" aria-label="Open: ${esc(flat(p.title))}">
+        <div class="top">
+          <div class="chips sm">${topicsOf(p).map(t => chip(t)).join('')}</div>
+          <span class="date">${esc(p.date)}</span>
+        </div>
+        <div class="fig">${has ? `<div class="frame">${media(p.cover, '')}</div>` : `<p class="title">${brk(p.title)}</p>`}</div>
+        ${has ? `<p class="title">${brk(p.title)}</p>` : (p.footnote ? `<div class="foot">${esc(p.footnote)}</div>` : '')}
+      </button>`;
+  }).join('');
+  const cards = Array.from(document.querySelectorAll('.card'));
+
+  /* 리스트 — 사진 없이 글만. 제목을 누르면 그 자리에서 펼쳐짐 */
+  const hasImages = p => !!p.cover || (p.content || []).some(b => b.image || b.images || b.video);
+  const textBlocks = p => (p.content || []).map(b => {
+    if (b.lead)    return `<p class="p-lead">${esc(b.lead)}</p>`;
+    if (b.text)    return `<p class="p-body">${esc(b.text)}</p>`;
+    if (b.heading) return `<p class="p-head">${esc(b.heading)}</p>`;
+    if (b.outcome) return `<p class="p-out">${esc(b.outcome)}</p>`;
+    return '';
+  }).join('');
+  $('list').innerHTML = PORTFOLIO_DATA.map((p, i) => {
+    const meta = [p.role, p.org].filter(Boolean).map(esc).join(' · ');
+    const more = (p.links || []).map(l => `<a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.label)} ↗</a>`)
+      .concat(hasImages(p) ? [`<button type="button" data-open="${i}">See with images</button>`] : []).join('');
+    return `
+      <div class="lrow" data-i="${i}">
+        <button type="button" class="lhead" aria-expanded="false" aria-controls="lb-${i}">
+          <span class="when">${esc(p.date)}</span>
+          <span>
+            <p class="ltitle">${esc(flat(p.title))}</p>
+            ${meta ? `<p class="lmeta">${meta}</p>` : ''}
+          </span>
+          <span class="chips sm">${topicsOf(p).map(t => chip(t)).join('')}</span>
+          <span class="sign" aria-hidden="true">+</span>
+        </button>
+        <div class="lbody" id="lb-${i}" hidden>
+          ${textBlocks(p) || `<p class="p-body">Details coming soon.</p>`}
+          ${more ? `<div class="p-more">${more}</div>` : ''}
+        </div>
+      </div>`;
+  }).join('');
+  const rows = Array.from(document.querySelectorAll('.lrow'));
+  $('list').addEventListener('click', e => {
+    const o = e.target.closest('[data-open]');
+    if (o) { open(+o.dataset.open, o); return; }
+    const h = e.target.closest('.lhead'); if (!h) return;
+    const body = h.nextElementSibling, willOpen = body.hidden;
+    body.hidden = !willOpen;
+    h.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+    h.querySelector('.sign').textContent = willOpen ? '–' : '+';
+  });
+
+  /* 필터 — 제외된 카드는 자리만 남기고 사라지고, 선택한 토픽은 카드 안에서도 파랗게 */
+  function applyFilter() {
+    let shown = 0;
+    cards.forEach(c => {
+      const on = !current || topicsOf(PORTFOLIO_DATA[+c.dataset.i]).includes(current);
+      c.classList.toggle('out', !on);
+      c.setAttribute('aria-hidden', on ? 'false' : 'true');
+      c.tabIndex = on ? 0 : -1;
+      if (on) shown++;
+    });
+    rows.forEach(r => {
+      const on = !current || topicsOf(PORTFOLIO_DATA[+r.dataset.i]).includes(current);
+      if (on && r.hidden) { r.classList.remove('in'); void r.offsetWidth; r.classList.add('in'); }
+      r.hidden = !on;
+    });
+    document.querySelectorAll('#tags .chip').forEach(b => b.setAttribute('aria-pressed', b.dataset.topic === current ? 'true' : 'false'));
+    document.querySelectorAll('.card .chip, .lrow .chip, #m-tags .chip').forEach(s => s.classList.toggle('on', s.dataset.t === current));
+    $('clear').hidden = !current;
+    $('count').textContent = shown + ' / ' + PORTFOLIO_DATA.length;
+    $('empty').hidden = shown > 0;
+  }
+  $('tags').addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    current = (current === b.dataset.topic) ? null : b.dataset.topic;
+    applyFilter();
+  });
+  $('clear').addEventListener('click', () => { current = null; applyFilter(); });
+  applyFilter();
+
+  /* 팝업 */
+  const modal = $('modal');
+  function render(i) {
+    const p = PORTFOLIO_DATA[i];
+    $('m-index').textContent = String(i + 1).padStart(2, '0') + ' / ' + String(PORTFOLIO_DATA.length).padStart(2, '0');
+    $('m-title').textContent = flat(p.title);
+    const rows = [['Role', p.role], ['Where', p.org], ['When', p.year]].filter(r => r[1]);
+    $('m-dl').innerHTML = rows.map(r => `<dt>${esc(r[0])}</dt><dd>${esc(r[1])}</dd>`).join('');
+    $('m-tags').innerHTML = topicsOf(p).map(t => chip(t, t === current)).join('');
+    $('m-links').innerHTML = (p.links || []).map(l => `<a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.label)} ↗</a>`).join('');
+    const fig = (src, cap, pad) => `<figure${pad ? ' class="pad"' : ''}>${media(src, cap || flat(p.title))}</figure>`;
+    const blocks = (p.content || []).map(b => {
+      if (b.lead)    return `<p class="lead">${esc(b.lead)}</p>`;
+      if (b.text)    return `<p class="para">${esc(b.text)}</p>`;
+      if (b.heading) return `<h3>${esc(b.heading)}</h3>`;
+      if (b.outcome) return `<p class="outcome">${esc(b.outcome)}</p>`;
+      if (b.image)   return fig(b.image, b.caption, b.pad).replace('</figure>', b.caption ? `<figcaption>${esc(b.caption)}</figcaption></figure>` : '</figure>');
+      if (b.images)  return `<div class="row">${b.images.map(src => fig(src, b.caption, b.pad)).join('')}</div>` + (b.caption ? `<figcaption style="margin:-14px 0 22px">${esc(b.caption)}</figcaption>` : '');
+      if (b.video) {
+        const cap = b.caption ? `<figcaption>${esc(b.caption)}</figcaption>` : '';
+        const em = embedOf(b.video);
+        return em
+          ? `<figure><iframe class="embed" src="${esc(em)}" title="${esc(b.caption || flat(p.title))}" loading="lazy" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>${cap}</figure>`
+          : `<figure><video src="${esc(b.video)}" controls playsinline preload="metadata"></video>${cap}</figure>`;
+      }
+      return '';
+    }).join('');
+    $('m-content').innerHTML = blocks || `<p class="para">Details coming soon.</p>`;
+    modal.querySelector('.panel').scrollTop = 0;
+  }
+  let opener = null;
+  function open(i, from) {
+    opener = from || cards[i];
+    openIdx = i; render(i);
+    modal.classList.add('open'); modal.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('lock');
+    modal.querySelector('.close').focus();
+  }
+  function close() {
+    $('m-content').querySelectorAll('video').forEach(v => v.pause());          /* 닫으면 소리 멈춤 */
+    $('m-content').querySelectorAll('iframe').forEach(f => { f.src = f.src; });
+    modal.classList.remove('open'); modal.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('lock');
+    if (opener && opener.isConnected) opener.focus();
+    opener = null;
+    openIdx = -1;
+  }
+  function step(d) {
+    const vis = cards.filter(c => !c.classList.contains('out')).map(c => +c.dataset.i);
+    if (!vis.length) return;
+    let k = vis.indexOf(openIdx); k = (k + d + vis.length) % vis.length;
+    openIdx = vis[k]; render(openIdx);
+  }
+  $('grid').addEventListener('click', e => { const c = e.target.closest('.card'); if (c && !c.classList.contains('out')) open(+c.dataset.i, c); });
+
+  /* 보기 전환 — 마지막 선택을 기억 */
+  function setView(v, animate) {
+    const list = v === 'list';
+    $('grid').hidden = list; $('list').hidden = !list;
+    document.querySelectorAll('.viewbar [data-view]').forEach(b => b.setAttribute('aria-pressed', b.dataset.view === v ? 'true' : 'false'));
+    if (animate) { const el = list ? $('list') : $('grid'); el.classList.remove('view-in'); void el.offsetWidth; el.classList.add('view-in'); }
+    try { localStorage.setItem('portfolio-view', v); } catch (e) {}
+  }
+  document.querySelector('.viewbar').addEventListener('click', e => {
+    const b = e.target.closest('[data-view]'); if (b) setView(b.dataset.view, true);
+  });
+  let saved = null; try { saved = localStorage.getItem('portfolio-view'); } catch (e) {}
+  setView(saved === 'list' ? 'list' : 'cards', false);
+  modal.querySelectorAll('[data-close]').forEach(el => el.addEventListener('click', close));
+  $('m-prev').addEventListener('click', () => step(-1));
+  $('m-next').addEventListener('click', () => step(1));
+  addEventListener('keydown', e => {
+    if (!modal.classList.contains('open')) return;
+    if (e.key === 'Escape') close();
+    if (e.key === 'ArrowLeft') step(-1);
+    if (e.key === 'ArrowRight') step(1);
+  });
+
+  /* 마우스를 따라다니는 빛 — index.html 과 같음 */
+  const glow = $('glow');
+  if (glow && matchMedia('(pointer:fine)').matches && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const mix = (a, b, u) => a.map((v, i) => Math.round(v + (b[i] - v) * u));
+    const G1 = [56,178,232], G2 = [72,214,196], G3 = [148,240,92];
+    let tx = 0, ty = 0, cx = 0, cy = 0, started = false;
+    addEventListener('pointermove', e => { tx = e.clientX; ty = e.clientY;
+      if (!started) { started = true; cx = tx; cy = ty; glow.style.opacity = '1'; } }, { passive: true });
+    (function tick() {
+      cx += (tx - cx) * .08; cy += (ty - cy) * .08;
+      glow.style.transform = `translate(${cx}px,${cy}px)`;
+      const doc = Math.max(1, document.documentElement.scrollHeight - innerHeight);
+      const u = Math.min(1, Math.max(0, (scrollY + cy) / (doc + innerHeight)));
+      const c = u < .5 ? mix(G1, G2, u / .5) : mix(G2, G3, (u - .5) / .5);
+      glow.style.background = `radial-gradient(circle, rgba(${c},.30) 0%, rgba(${c},.11) 45%, rgba(${c},0) 70%)`;
+      requestAnimationFrame(tick);
+    })();
+  }
+})();
+</script>
+
+</body>
+</html>
