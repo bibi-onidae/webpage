@@ -436,6 +436,19 @@ const TOPICS = ['Research', 'AI', 'UI', 'UX', '3D', 'Spatial', 'Craft'];
    ============================================================================ */
 const PORTFOLIO_DATA = [
   {
+    title: 'Custom eye-tracking apparatus',
+    date: 'In progress',
+    topics: ['Research','Craft'],
+    cover: '',
+    footnote: 'NRF-funded intelligent packaging study',
+    role: 'Co-builder', org: 'Ajou University Business School', year: 'In progress',
+    content: [
+      { lead: 'A low-cost, head-mounted eye tracker for a study on how consumers read intelligent packaging cues.' },
+      { text: 'We are building the hardware as a team and running it on Pupil Core, an open-source eye-tracking platform from Pupil Labs. It will be used alongside EEG to measure where people look and how they respond to packaging signals in a three-year, NRF-funded project.' }
+    ],
+    links: [ { label: 'Pupil Core (open source)', url: 'https://github.com/pupil-labs/pupil' } ]
+  },
+  {
     title: 'Vibe Design: \nHuman-in-the-loop AI Agents for UI Design with Large Language Models',
     date: '2026',
     topics: ['Research', 'AI', 'UI','UX'],
@@ -453,22 +466,9 @@ const PORTFOLIO_DATA = [
       { text: 'In the main study, I built simulated users for five real participants from their demographics, personas, or usability-test transcripts. Of the 37 issues the real participants raised, the three types of agents also raised 46%, 57%, and 76%.' },
       { image: './assets/portfol/vibe-design-fig5-coverage.svg', caption: 'Share of real usability issues each type of simulated user also raised.' },
       { text: 'The 76% is an upper bound, since those agents read the same sessions I scored against. Agents also missed big-picture redesign ideas and complaints about service policies, so simulation complemented, rather than replaced, real users.' },
-      { outcome: 'Published at HICSS 59; received the Outstanding Thesis Award (Dean\'s Award) from Ajou Graduate School.' },
+      { outcome: 'Published at HICSS 59, and received the Outstanding Thesis Award (Dean\'s Award) from Ajou Graduate School.' },
     ],
     links: [ { label: 'Paper (HICSS 59)', url: 'https://doi.org/10.24251/HICSS.2026.530' } ]
-  },
-  {
-    title: 'Custom eye-tracking apparatus',
-    date: 'In progress',
-    topics: ['Research','Craft'],
-    cover: '',
-    footnote: 'NRF-funded intelligent packaging study',
-    role: 'Co-builder', org: 'Ajou University Business School', year: 'In progress',
-    content: [
-      { lead: 'A low-cost, head-mounted eye tracker for a study on how consumers read intelligent packaging cues.' },
-      { text: 'We are building the hardware as a team and running it on Pupil Core, an open-source eye-tracking platform from Pupil Labs. It will be used alongside EEG to measure where people look and how they respond to packaging signals in a three-year, NRF-funded project.' }
-    ],
-    links: [ { label: 'Pupil Core (open source)', url: 'https://github.com/pupil-labs/pupil' } ]
   },
   {
     title: 'LG Electronics \ninternal AI chatbot redesign',
@@ -479,13 +479,13 @@ const PORTFOLIO_DATA = [
     role: 'UI/UX Designer', org: 'WithData Inc.', year: 'Dec 2025 – Feb 2026',
     content: [
       { lead: 'A redesign of an internal AI chatbot that helps LG Electronics employees search company knowledge and check where each answer comes from.' },
-      { text: 'The original chatbot showed answers, but checking their sources was hard. Documents opened in a narrow pop-up, so users kept opening, closing, and going back, which broke their judgment of whether an answer was trustworthy. The layout also made it unclear what to look at first, and it felt more like a legacy work tool than an AI chatbot.' },
+      { text: 'The original chatbot showed answers, but checking their sources was hard. Documents opened in a narrow pop-up, so users kept opening, closing, and going back, which broke their judgment of whether an answer was trustworthy. The layout also made it unclear what to look at first, and it felt more like a legacy enterprise tool than a conversational AI.' },
       { image: './assets/portfol/as-is.png', caption: 'Before: source documents opened in a narrow pop-up over the chat.' },
       { text: 'I rebuilt the structure around familiar chat patterns so users could start without learning a new interface. A source tab gathers the documents behind each answer, with browser-style tabs for comparing several files quickly. I also added features for knowledge work: file upload, multi-turn conversation, visible reasoning steps, and chat history.' },
       { image: './assets/portfol/to-be.png', caption: 'After: a familiar chat layout with visible reasoning steps and a dedicated source tab.' },
-      { text: 'Drawing on HCI research on interactive debugging of multi-agent AI systems (Epperson et al., CHI 2025), I also proposed a show–intervene–verify loop. Timestamps on each reasoning step would let users return to the point where an answer went wrong and rerun from there. It was not built for technical reasons, but the client kept it under discussion as a follow-up feature.' },
+      { text: 'Drawing on HCI research on interactive debugging of multi-agent AI systems (Epperson et al., CHI 2025), I also proposed a identify → intervene loop. Timestamps on each reasoning step would let users return to the point where an answer went wrong and rerun from there. It was not implemented due to technical constrains, but the client kept it as a follow-up feature.' },
       { image: './assets/portfol/details.png', caption: '' },
-      { outcome: 'Delivered the full UI/UX design specification, which contributed to winning the LG Electronics contract.' }
+      { outcome: 'Delivered the UI/UX specification for the proposal, which contributed to winning the LG Electronics contract.' }
     ],
     links: [ { label: 'Referenced paper (CHI 2025)', url: 'https://doi.org/10.1145/3706598.3713581' } ]
   },
@@ -499,19 +499,17 @@ const PORTFOLIO_DATA = [
     content: [
       { lead: 'The image-generation part of a team-built AI agent that turns trending keywords into short-form videos.' },
       { text: 'Our team built an agent that collects trending keywords from news, online communities, and best-seller lists, then creates and uploads short videos. I was responsible for the image side: ComfyUI workflows that generate virtual models, composite products into new background scenes, and dress models in new clothing.' },
-      { text: 'Each workflow splits the job into modular node steps. Virtual try-on is one example: Grounding DINO and SAM find and mask the garment, DensePose maps the body, and IDM-VTON dresses the model. For product compositing, IC-Light relit product photos to match new backgrounds, and ControlNet and IP-Adapter guided the scene. InstantID kept a generated face consistent across poses.' },
       { image: './assets/portfol/comfy.png', caption: 'One of the workflows, virtual try-on: garment masking with Grounding DINO and SAM, body mapping with DensePose, and try-on with IDM-VTON.' },
-      { text: 'I then upgraded the workflow with newer models. FLUX replaced Stable Diffusion, producing sharper, higher-resolution portraits without negative prompts, and an LLM wrote the image prompts.' },
+      { text: 'I experimented the workflow with newer models. FLUX replaced Stable Diffusion, producing sharper, higher-resolution portraits without negative prompts, and an LLM wrote the image prompts.' },
       { image: './assets/portfol/FLUX.png', caption: 'The same portrait prompt generated with SD1.5, SDXL, and FLUX.' },
       { text: 'PuLID placed a generated face onto a new image while keeping its identity, and Leffa changed clothing while preserving garment details such as ties and gathers.' },
       { image: './assets/portfol/faceswap.png', caption: 'Face swap with PuLID: the input face is carried into a new image.' },
       { image: './assets/portfol/cloth.png', caption: 'Virtual try-on with Leffa: the input garment is fitted onto the model.' },
-      { text: 'The same approach extended to product compositing. For a car ad, IC-Light relit the car to match each new scene from a single background prompt. For a perfume product, ControlNet and IP-Adapter blended the bottle into a new styled background without IC-Light.' },
+      { text: 'The same approach extended to product compositing. For a car, IC-Light relit the car to match each new scene from a single background prompt. For a perfume, ControlNet and IP-Adapter blended the bottle into a new styled background without IC-Light.' },
       { image: './assets/portfol/workflow.png', caption: 'Car compositing workflow: source preparation, first diffusion with IC-Light, then edge masking and a second diffusion to add detail.' },
       { image: './assets/portfol/car.png', caption: 'One car photo and background, relit for four prompts: rainy day, desert, winter snow, and sunset.' },
       { image: './assets/portfol/workflow2.png', caption: 'Perfume compositing workflow: source preparation, background generation with ControlNet and IP-Adapter, then product compositing.' },
       { image: './assets/portfol/perfume.png', caption: 'A perfume bottle composited into a new background using reference images for style.' },
-      { outcome: 'Built a working image compositing pipeline for the agent; presented the final project report.' }
     ],
     links: [ ]
   },
@@ -524,11 +522,17 @@ const PORTFOLIO_DATA = [
     role: 'Visual Merchandise Designer', org: 'GNCO Co., Ltd.', year: 'Jan 2023 – Sep 2023',
     content: [
     { lead: 'The brand\'s offline touchpoints — in-store displays, pop-up stores, weekly mannequin styling — planned, designed, and supervised on site.' },
-    { image: './assets/portfol/TI-popup2.png', caption: 'Department store pop-up' },
-    { image: './assets/portfol/TI-popup2.png', caption: 'Department store pop-up' },
-    { image: './assets/portfol/TI-popup3.png', caption: 'Department store pop-up' },
+    { text: 'Visual merchandise designer was my first role after graduating in design. I was responsible for most of the brand\'s offline touchpoints, from planning a display concept to installing it on site. The job sat between design and operations: each visual had to look right in the store, work across dozens of locations, and hold up against weekly sales numbers.'},
+    { text: 'For department store pop-ups, I planned the concept, designed the space, researched fixtures, materials, and vendors, and supervised installation on site. Each pop-up had to stand out in a crowded atrium.'},
+    { image: './assets/portfol/TI-popup1.png', caption: 'Pop-up at Hyundai Department Store, Pangyo' },
+    { image: './assets/portfol/TI-popup2.png', caption: 'Pop-up at Lotte Premium Outlets Timevillas' },
+    { text: 'Because pop-ups run for a short time in shared spaces, I designed them to be built quickly and adjusted on site, working directly with vendors and store staff during installation.'},
+    { image: './assets/portfol/TI-popup3.png', caption: 'Pop-up at Lotte Department Store, Incheon' },
+    { text: 'Beyond pop-ups, I set up visual merchandising for new store openings and managed displays in existing stores, keeping each location aligned with the brand\'s seasonal direction.'},
     { image: './assets/portfol/toinq.png', caption: 'Store launch for toinq, the company\'s new brand' },
+    { text: 'I edited campaign imagery into visual components for in-store use. Several visuals I designed on my own were adopted as the main visuals on the brand\'s official social media and website.'},
     { image: './assets/portfol/TI-model.png', caption: 'Campaign imagery edited into in-store visuals' },
+    { text: 'Every week, I created mannequin styling guidelines for new arrivals and distributed them to stores nationwide. I worked with store managers to make sure displays were applied consistently, managed fixture inventory, and reported weekly sales of featured display products to the CEO.'},
     { image: './assets/portfol/TI-me.png', caption: 'Behind the scenes' }
     ],
   links: [
@@ -545,7 +549,7 @@ const PORTFOLIO_DATA = [
     role: '3D Designer', org: 'RealBits Inc.', year: 'Apr 2022 – Dec 2022',
     content: [
       { lead: '3D characters and accessories for an NFT service that let owners use their character as a face-tracking avatar in live streams and messaging apps.' },
-      { text: 'Working with a developer, I conceived and modeled the characters and a range of accessories in Blender for Gen Z and millennial users. Every item was built to fit the same base head, so owners could mix hairstyles, glasses, hats, and other pieces into their own look.' },
+      { text: 'Working with a developer, I conceived and modeled the characters and a range of accessories in Blender for Gen Z users.'},
       { image: './assets/portfol/blender.png', caption: 'Part of the accessory set' },
       { text: 'Each character also needed expressions that could follow the user\'s face. I set up shape keys for movements such as blinking and opening the mouth, so the avatar could mirror the user in real time.' },
       { image: './assets/portfol/blender.mp4', caption: 'Facial expression shape keys being tested in Blender.' },
@@ -577,7 +581,10 @@ const PORTFOLIO_DATA = [
       { image: './assets/portfol/metal2.png', caption: '' },
       { image: './assets/portfol/metal.png', caption: 'Metal artwork' },
       { outcome: 'Exhibited at Konkuk University Living Design graduation exhibition.' }],
-    links: []
+    links: [
+      { label: 'Instagram · @etang_endand', url: 'https://www.instagram.com/etang_endand/' },
+      { label: 'Instagram · @kuld2021_endand', url: 'https://www.instagram.com/kuld2021_endand/'}
+    ]
   }
 ];
 
